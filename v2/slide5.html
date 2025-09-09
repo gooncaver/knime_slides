@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solution Philosophy - KNIME Converter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, Helvetica, Arial, sans-serif;
+            background-color: #F0F0F0;
+            color: #000000;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #121212;
+            border-radius: 16px;
+            padding: 40px 48px 60px 48px;
+            position: relative;
+            color: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Navigation pill */
+        .nav-pill {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #4A4A4A;
+            color: #FFFFFF;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Pagination dots */
+        .pagination {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid #D0D0D0;
+            background-color: transparent;
+        }
+
+        .dot.active {
+            background-color: #FFFFFF;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 10px;
+            color: #D0D0D0;
+        }
+
+        /* Context subtitle */
+        .context-subtitle {
+            font-size: 14px;
+            font-weight: 400;
+            color: #D0D0D0;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        /* Opening statements */
+        .opening-statements {
+            margin-bottom: 32px;
+        }
+
+        .opening-statement {
+            font-size: 22px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 12px;
+            text-align: left;
+        }
+
+        /* Hero message */
+        .main-headline {
+            font-size: 56px;
+            font-weight: 900;
+            line-height: 0.9;
+            text-align: center;
+            margin-bottom: 24px;
+            color: #FFFFFF;
+            letter-spacing: 0.05em;
+        }
+
+        /* Guiding icon */
+        .guiding-icon {
+            font-size: 24px;
+            color: #FFFFFF;
+            margin: 16px auto;
+            opacity: 0.6;
+            text-align: center;
+        }
+
+        /* Manifesto text */
+        .manifesto-text {
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 1.4;
+            color: #D0D0D0;
+            max-width: 700px;
+            margin: 0 auto 20px auto;
+            text-align: center;
+        }
+
+        .emphasis {
+            color: #FFFFFF;
+            font-weight: 700;
+        }
+
+        /* Stats integration */
+        .stats-inline {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            margin: 20px 0 16px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-highlight {
+            font-size: 40px;
+            font-weight: 900;
+            color: #00E6C3;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #D0D0D0;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 8px;
+        }
+
+        /* Supporting paragraph */
+        .supporting-paragraph {
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1.4;
+            color: #D0D0D0;
+            max-width: 550px;
+            margin: 0 auto;
+            text-align: center;
+            font-style: italic;
+            border-left: 3px solid #00E6C3;
+            padding-left: 20px;
+        }
+
+        /* Animation classes */
+        .animate-on-load {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .animate-on-load.start-animation {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .zoom-in {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .zoom-in.start-animation {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .delay-1 { transition-delay: 0.2s; }
+        .delay-2 { transition-delay: 0.6s; }
+        .delay-3 { transition-delay: 1.0s; }
+        .delay-4 { transition-delay: 1.4s; }
+        .delay-5 { transition-delay: 1.8s; }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="nav-pill">KNIME to Python</div>
+        
+        <div class="pagination">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+
+        <div class="footer">© 2025 Athinia Technologies LLC. All rights reserved.</div>
+
+        <!-- Context -->
+        <div class="context-subtitle animate-on-load delay-1">Design Philosophy</div>
+
+        <!-- Opening Statements -->
+        <div class="opening-statements animate-on-load delay-1">
+            <div class="opening-statement">Forget human vs AI.</div>
+            <div class="opening-statement">Embrace human + AI.</div>
+        </div>
+
+        <!-- Main Statement - Massive Typography -->
+        <h1 class="main-headline zoom-in delay-2">
+            HUMAN-GUIDED<br>
+            AI-ACCELERATED
+        </h1>
+
+        <!-- Guiding Icon -->
+        <div class="guiding-icon animate-on-load delay-3">→</div>
+
+        <!-- Manifesto Text -->
+        <div class="manifesto-text animate-on-load delay-3">
+            Our design philosophy treats AI as a <span class="emphasis">brilliant junior developer</span>—capable of handling the tedious, repetitive computational work while the human expert focuses on strategic decisions, domain validation, and architectural guidance.
+        </div>
+
+        <!-- Stats Integration -->
+        <div class="stats-inline animate-on-load delay-4">
+            <div class="stat-item">
+                <div class="stat-highlight">80%</div>
+                <div class="stat-label">AI Acceleration</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-highlight">20%</div>
+                <div class="stat-label">Human Guidance</div>
+            </div>
+        </div>
+
+        <!-- Supporting Paragraph -->
+        <div class="supporting-paragraph animate-on-load delay-5">
+            "This partnership model maximizes the computational power of AI while preserving the irreplaceable domain expertise and judgment of human professionals. The result: faster conversion with higher quality outcomes."
+        </div>
+    </div>
+
+    <script>
+        // Trigger animations when the page loads
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const animatedElements = document.querySelectorAll('.animate-on-load, .zoom-in');
+                animatedElements.forEach(element => {
+                    element.classList.add('start-animation');
+                });
+            }, 300);
+        });
+    </script>
+</body>
+</html>

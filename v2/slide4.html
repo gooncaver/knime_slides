@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brittle vs Composable - KNIME Converter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/@blueprintjs/core@^5.0.0/lib/css/blueprint.css" rel="stylesheet" />
+    <link href="https://unpkg.com/@blueprintjs/icons@^5.0.0/lib/css/blueprint-icons.css" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, Helvetica, Arial, sans-serif;
+            background-color: #F0F0F0;
+            color: #000000;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #121212;
+            border-radius: 16px;
+            padding: 80px 0 48px 0;
+            position: relative;
+            color: #FFFFFF;
+            display: flex;
+            align-items: stretch;
+        }
+
+        /* Navigation pill */
+        .nav-pill {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #4A4A4A;
+            color: #FFFFFF;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Pagination dots */
+        .pagination {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid #D0D0D0;
+            background-color: transparent;
+        }
+
+        .dot.active {
+            background-color: #FFFFFF;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 10px;
+            color: #D0D0D0;
+        }
+
+        /* Split layout columns */
+        .problem-column,
+        .solution-column {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 32px 48px 32px 48px;
+        }
+
+        .problem-column {
+            background: transparent;
+            border-radius: 16px 0 0 16px;
+            position: relative;
+        }
+
+        /* Centered divider */
+        .slide-container::after {
+            content: '';
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            bottom: 80px;
+            width: 1px;
+            background-color: #4A4A4A;
+            transform: translateX(-50%);
+        }
+
+        .solution-column {
+            background: transparent;
+        }
+
+        /* Column headers */
+        .column-header {
+            font-size: 48px;
+            font-weight: 900;
+            line-height: 0.85;
+            margin-bottom: 16px;
+            letter-spacing: 0.05em;
+            margin-top: 0;
+        }
+
+        .problem-header {
+            color: #FF6B6B;
+        }
+
+        .solution-header {
+            color: #00E6C3;
+        }
+
+        .column-subtitle {
+            font-size: 14px;
+            font-weight: 400;
+            color: #D0D0D0;
+            margin-bottom: 32px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Items */
+        .issue-item,
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 24px;
+            padding: 16px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border-left: 4px solid transparent;
+        }
+
+        .issue-item {
+            border-left-color: #FF6B6B;
+        }
+
+        .benefit-item {
+            border-left-color: #00E6C3;
+        }
+
+        .item-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            flex-shrink: 0;
+            font-size: 16px;
+        }
+
+        .item-icon .bp5-icon {
+            font-size: 16px;
+        }
+
+        .issue-icon {
+            background-color: #FF6B6B;
+            color: #121212;
+        }
+
+        .benefit-icon {
+            background-color: #00E6C3;
+            color: #121212;
+        }
+
+        .item-content {
+            flex: 1;
+        }
+
+        .item-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #FFFFFF;
+        }
+
+        .item-description {
+            font-size: 12px;
+            font-weight: 400;
+            color: #D0D0D0;
+            line-height: 1.4;
+        }
+
+        /* VS indicator */
+        .vs-indicator {
+            position: absolute;
+            top: 50%;
+            left: calc(48%);
+            transform: translate(-50%, -50%);
+            width: 48px;
+            height: 48px;
+            background-color: #4A4A4A;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 900;
+            color: #FFFFFF;
+            border: 4px solid #121212;
+            z-index: 10;
+        }
+
+        /* Animation classes */
+        .animate-on-load {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .animate-on-load.start-animation {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .animate-vs {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .animate-vs.start-animation {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .delay-1 { transition-delay: 0.2s; }
+        .delay-2 { transition-delay: 0.4s; }
+        .delay-3 { transition-delay: 0.6s; }
+        .delay-4 { transition-delay: 0.8s; }
+        .delay-5 { transition-delay: 1.0s; }
+        .delay-6 { transition-delay: 1.2s; }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="nav-pill">KNIME to Python</div>
+        
+        <div class="pagination">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+
+        <div class="footer">© 2025 Athinia Technologies LLC. All rights reserved.</div>
+
+        <!-- Problem Column -->
+        <div class="problem-column">
+            <h2 class="column-header problem-header animate-on-load delay-1">BRITTLE<br>WORKFLOWS</h2>
+            <div class="column-subtitle animate-on-load delay-2">Current State Challenges</div>
+
+            <div class="issue-item animate-on-load delay-3">
+                <div class="item-icon issue-icon"><span class="bp5-icon bp5-icon-warning-sign"></span></div>
+                <div class="item-content">
+                    <div class="item-title">Monolithic & Fragile</div>
+                    <div class="item-description">200-node workflows where changing one component puts the entire system at risk</div>
+                </div>
+            </div>
+
+            <div class="issue-item animate-on-load delay-4">
+                <div class="item-icon issue-icon"><span class="bp5-icon bp5-icon-lock"></span></div>
+                <div class="item-content">
+                    <div class="item-title">Trapped Knowledge</div>
+                    <div class="item-description">Years of institutional expertise locked in proprietary XML formats</div>
+                </div>
+            </div>
+
+            <div class="issue-item animate-on-load delay-5">
+                <div class="item-icon issue-icon"><span class="bp5-icon bp5-icon-git-branch"></span></div>
+                <div class="item-content">
+                    <div class="item-title">Version Control Nightmare</div>
+                    <div class="item-description">Impossible to track changes, collaborate, or integrate with modern DevOps</div>
+                </div>
+            </div>
+
+            <div class="issue-item animate-on-load delay-6">
+                <div class="item-icon issue-icon"><span class="bp5-icon bp5-icon-flash"></span></div>
+                <div class="item-content">
+                    <div class="item-title">Technical Debt</div>
+                    <div class="item-description">Increasing maintenance overhead, reduced agility, modernization barriers</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Solution Column -->
+        <div class="solution-column">
+            <h2 class="column-header solution-header animate-on-load delay-1">COMPOSABLE<br>ASSETS</h2>
+            <div class="column-subtitle animate-on-load delay-2">Future State Vision</div>
+
+            <div class="benefit-item animate-on-load delay-3">
+                <div class="item-icon benefit-icon"><span class="bp5-icon bp5-icon-applications"></span></div>
+                <div class="item-content">
+                    <div class="item-title">Modular Building Blocks</div>
+                    <div class="item-description">Versioned Python functions for reusable pipeline components</div>
+                </div>
+            </div>
+
+            <div class="benefit-item animate-on-load delay-4">
+                <div class="item-icon benefit-icon"><span class="bp5-icon bp5-icon-search"></span></div>
+                <div class="item-content">
+                    <div class="item-title">Searchable Knowledge</div>
+                    <div class="item-description">Discoverable business logic library accessible to all teams</div>
+                </div>
+            </div>
+
+            <div class="benefit-item animate-on-load delay-5">
+                <div class="item-icon benefit-icon"><span class="bp5-icon bp5-icon-cog"></span></div>
+                <div class="item-content">
+                    <div class="item-title">Modern Engineering</div>
+                    <div class="item-description">Git integration with CI/CD pipelines and automated testing</div>
+                </div>
+            </div>
+
+            <div class="benefit-item animate-on-load delay-6">
+                <div class="item-icon benefit-icon"><span class="bp5-icon bp5-icon-rocket"></span></div>
+                <div class="item-content">
+                    <div class="item-title">True Agility</div>
+                    <div class="item-description">Faster development with consistent quality and seamless scaling</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="vs-indicator animate-vs delay-2">VS</div>
+    </div>
+
+    <script>
+        // Trigger animations when the page loads
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const animatedElements = document.querySelectorAll('.animate-on-load, .animate-vs');
+                animatedElements.forEach(element => {
+                    element.classList.add('start-animation');
+                });
+            }, 300);
+        });
+    </script>
+</body>
+</html>

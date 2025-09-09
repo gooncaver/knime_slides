@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Architecture & Technical Specifications - KNIME to Python</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Blueprint.js CSS -->
+    <link href="https://unpkg.com/@blueprintjs/core@5/lib/css/blueprint.css" rel="stylesheet">
+    <link href="https://unpkg.com/@blueprintjs/icons@5/lib/css/blueprint-icons.css" rel="stylesheet">
+    <!-- Mermaid.js for diagrams -->
+    <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, Helvetica, Arial, sans-serif;
+            background-color: #F0F0F0;
+            color: #000000;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #121212;
+            border-radius: 16px;
+            padding: 40px 48px 70px 48px;
+            position: relative;
+            color: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        /* Navigation pill */
+        .nav-pill {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #4A4A4A;
+            color: #FFFFFF;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .slide-subtitle {
+            font-size: 14px;
+            color: #D0D0D0;
+            font-weight: 400;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Pagination dots */
+        .pagination {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid #D0D0D0;
+            background-color: transparent;
+        }
+
+        .dot.active {
+            background-color: #FFFFFF;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 10px;
+            color: #D0D0D0;
+        }
+
+        /* Main content */
+        .slide-title {
+            font-size: 60px;
+            font-weight: 900;
+            line-height: 0.85;
+            text-align: left;
+            color: #FFFFFF;
+            letter-spacing: -0.02em;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        /* KPI Grid Layout */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 16px;
+            flex: 1;
+            height: 100%;
+            max-height: 580px;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        .kpi-card {
+            background-color: #1C1C1E;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #3A3A3C;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-height: 0;
+            min-width: 0;
+            max-width: 100%;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        /* Grid positioning for better layout */
+        .kpi-card.wide {
+            grid-column: span 2;
+        }
+
+        .kpi-card.extra-wide {
+            grid-column: span 3;
+        }
+
+        .kpi-card.tall {
+            grid-row: span 2;
+        }
+
+        .kpi-card:hover {
+            border-color: #4A4A4A;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .kpi-card.wide {
+            grid-column: span 2;
+        }
+
+        .kpi-card.tall {
+            grid-row: span 2;
+        }
+
+        /* Specialized card types for better visual organization */
+        .kpi-card.data-card {
+            background: linear-gradient(135deg, #1C1C1E 0%, #1A1A1C 100%);
+        }
+
+        .kpi-card.ai-card {
+            background: linear-gradient(135deg, #1C1C1E 0%, #1E1C1F 100%);
+            border-color: rgba(0, 230, 195, 0.2);
+        }
+
+        .kpi-card.status-card .kpi-value {
+            color: #FFD700;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+        }
+
+        .kpi-card.metrics-card .kpi-value {
+            color: #FF6B6B;
+            text-shadow: 0 0 8px rgba(255, 107, 107, 0.4);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            flex-shrink: 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(74, 74, 74, 0.3);
+        }
+
+        .card-icon {
+            font-size: 16px;
+            flex-shrink: 0;
+            color: #00E6C3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-icon .bp5-icon {
+            color: #00E6C3 !important;
+        }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #FFFFFF;
+            line-height: 1.1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .kpi-value {
+            font-size: 38px;
+            font-weight: 900;
+            color: #00E6C3;
+            margin-bottom: 4px;
+            flex-shrink: 0;
+            line-height: 1;
+            text-shadow: 0 0 8px rgba(0, 230, 195, 0.4);
+        }
+
+        .kpi-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #FFFFFF;
+            margin-bottom: 10px;
+            flex-shrink: 0;
+            line-height: 1.2;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .kpi-detail {
+            font-size: 11px;
+            color: #D0D0D0;
+            line-height: 1.3;
+            flex-grow: 1;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+
+        .tech-spec-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .tech-spec-list li {
+            font-size: 10px;
+            color: #D0D0D0;
+            padding-left: 16px;
+            padding-right: 6px;
+            padding-top: 3px;
+            padding-bottom: 3px;
+            position: relative;
+            line-height: 1.4;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            background: rgba(0, 230, 195, 0.05);
+            border-radius: 6px;
+            border-left: 3px solid #00E6C3;
+            transition: background-color 0.2s ease;
+        }
+
+        .tech-spec-list li:hover {
+            background: rgba(0, 230, 195, 0.1);
+        }
+
+        .tech-spec-list li:before {
+            content: "▶";
+            color: #00E6C3;
+            font-weight: bold;
+            position: absolute;
+            left: 6px;
+            top: 4px;
+            font-size: 8px;
+        }
+
+        .component-diagram {
+            background: linear-gradient(135deg, rgba(0, 230, 195, 0.1) 0%, rgba(0, 230, 195, 0.05) 100%);
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 6px;
+            border: 1px solid rgba(0, 230, 195, 0.2);
+            text-align: center;
+            font-size: 9px;
+            color: #FFFFFF;
+            line-height: 1.2;
+            flex-shrink: 0;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(0, 230, 195, 0.1);
+        }
+
+        /* Mermaid diagram styling */
+        .mermaid-container {
+            background: rgba(0, 230, 195, 0.05);
+            border-radius: 8px;
+            padding: 10px;
+            border: 1px solid rgba(0, 230, 195, 0.2);
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .mermaid {
+            max-width: 100%;
+            max-height: 100%;
+            transform: scale(1.3);
+            transform-origin: center;
+        }
+
+        /* Fullscreen button */
+        .fullscreen-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 230, 195, 0.2);
+            border: 1px solid rgba(0, 230, 195, 0.4);
+            border-radius: 6px;
+            color: #00E6C3;
+            padding: 6px 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .fullscreen-btn:hover {
+            background: rgba(0, 230, 195, 0.3);
+            border-color: rgba(0, 230, 195, 0.6);
+            transform: translateY(-1px);
+        }
+
+        /* Fullscreen modal */
+        .fullscreen-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+        }
+
+        .fullscreen-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fullscreen-content {
+            width: 90vw;
+            height: 80vh;
+            background: #121212;
+            border-radius: 16px;
+            border: 2px solid rgba(0, 230, 195, 0.3);
+            padding: 20px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .fullscreen-mermaid {
+            width: 100%;
+            height: 100%;
+            transform: scale(0.9);
+            transform-origin: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Override mermaid SVG sizing in fullscreen */
+        .fullscreen-mermaid svg {
+            max-width: 100% !important;
+            max-height: 100% !important;
+            width: auto !important;
+            height: auto !important;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 107, 107, 0.2);
+            border: 1px solid rgba(255, 107, 107, 0.4);
+            border-radius: 6px;
+            color: #FF6B6B;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 107, 107, 0.3);
+            border-color: rgba(255, 107, 107, 0.6);
+            transform: translateY(-1px);
+        }
+
+        /* Animation classes */
+        .animate-on-load {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        .animate-on-load.start-animation {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+        .delay-5 { transition-delay: 0.5s; }
+        .delay-6 { transition-delay: 0.6s; }
+        .delay-7 { transition-delay: 0.7s; }
+        .delay-8 { transition-delay: 0.8s; }
+        .delay-9 { transition-delay: 0.9s; }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="nav-pill">KNIME to Python</div>
+        
+        <div class="pagination">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+
+        <div class="footer">© 2025 Athinia Technologies LLC. All rights reserved.</div>
+
+        <h1 class="slide-title animate-on-load delay-1">System Architecture</h1>
+        <div class="slide-subtitle animate-on-load delay-2">
+            Key Components
+        </div>
+        <div class="kpi-grid">
+            <!-- Core Architecture (spans 2 columns) -->
+            <div class="kpi-card wide animate-on-load delay-2">
+                <div class="card-header">
+                    <span class="card-icon"><span class="bp5-icon bp5-icon-diagram-tree"></span></span>
+                    <span class="card-title">System Architecture</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; height: 100%; align-items: stretch;">
+                    <div style="display: flex; flex-direction: column; align-items: center; text-align: center; justify-content: space-between;">
+                        <div class="kpi-value">3</div>
+                        <div class="kpi-label">Core Layers</div>
+                        <div class="kpi-detail">Data Foundation, Semantic Layer, Application Layer</div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: center; text-align: center; justify-content: space-between;">
+                        <div class="kpi-value">4</div>
+                        <div class="kpi-label">Pipeline Phases</div>
+                        <div class="kpi-detail">Parse → Generate → Cluster → Deploy</div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: center; text-align: center; justify-content: space-between;">
+                        <div class="kpi-value">4</div>
+                        <div class="kpi-label">Object Types</div>
+                        <div class="kpi-detail">Functions, Clusters, Nodes, Sessions</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Features -->
+            <div class="kpi-card ai-card animate-on-load delay-3">
+                <div class="card-header">
+                    <span class="card-icon"><span class="bp5-icon bp5-icon-lightbulb"></span></span>
+                    <span class="card-title">AI-Powered Features</span>
+                </div>
+                <ul class="tech-spec-list">
+                    <li>LLM Node-to-SQL Generation</li>
+                    <li>Semantic Vectorization</li>
+                    <li>On-demand AIP Functions</li>
+                    <li>Code Quality Evaluation</li>
+                    <li>Automated Test Generation</li>
+                </ul>
+            </div>
+
+            <!-- Platform Integration -->
+            <div class="kpi-card tech-card animate-on-load delay-4">
+                <div class="card-header">
+                    <span class="card-icon"><span class="bp5-icon bp5-icon-cog"></span></span>
+                    <span class="card-title">Platform Integration</span>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: center; text-align: center; height: 100%; justify-content: space-between;">
+                    <div class="kpi-value">100%</div>
+                    <div class="kpi-label">Palantir Foundry</div>
+                    <div class="kpi-detail">Built entirely on Foundry primitives: Code Repositories, Ontology, Workshop</div>
+                </div>
+            </div>
+
+            <!-- Data Processing (spans 3 columns) -->
+            <div class="kpi-card extra-wide data-card animate-on-load delay-5">
+                <div class="card-header">
+                    <span class="card-icon"><span class="bp5-icon bp5-icon-flows"></span></span>
+                    <span class="card-title">Data Processing Pipeline</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr; gap: 16px; height: 100%;">
+                    <div class="mermaid-container">
+                        <button class="fullscreen-btn" onclick="openFullscreen()">
+                            <span class="bp5-icon bp5-icon-fullscreen"></span>
+                            Expand
+                        </button>
+                        <div class="mermaid">
+                        flowchart LR
+                            A[.knwf Files] --> B[Parse & Extract]
+                            B --> C[Node Analysis]
+                            C --> D[SQL Generation]
+                            D --> E[Semantic Clustering]
+                            E --> F[Function Creation]
+                            F --> G[Code Quality Check]
+                            G --> H[Deploy to Foundry]
+                            
+                            B --> I[(knime_nodes)]
+                            B --> J[(knime_connections)]
+                            D --> K[(nodes_with_sql)]
+                            E --> L[(clustered_nodes)]
+                            F --> M[(canonical_functions)]
+                            
+                            style A fill:#1C1C1E,stroke:#00E6C3,stroke-width:2px,color:#FFFFFF
+                            style H fill:#1C1C1E,stroke:#00E6C3,stroke-width:2px,color:#FFFFFF
+                            style I fill:#2A2A2C,stroke:#00E6C3,stroke-width:1px,color:#D0D0D0
+                            style J fill:#2A2A2C,stroke:#00E6C3,stroke-width:1px,color:#D0D0D0
+                            style K fill:#2A2A2C,stroke:#00E6C3,stroke-width:1px,color:#D0D0D0
+                            style L fill:#2A2A2C,stroke:#00E6C3,stroke-width:1px,color:#D0D0D0
+                            style M fill:#2A2A2C,stroke:#00E6C3,stroke-width:1px,color:#D0D0D0
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deployment Status -->
+            <div class="kpi-card data-card animate-on-load delay-7">
+                <div class="card-header">
+                    <span class="card-icon"><span class="bp5-icon bp5-icon-rocket-slant"></span></span>
+                    <span class="card-title">Deployment</span>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: center; text-align: center; height: 100%; justify-content: space-between;">
+                    <div class="kpi-value" style="color: #00E6C3; font-size: 28px;">UAT</div>
+                    <div class="kpi-label">Current Status</div>
+                    <div class="kpi-detail">Feature Complete, Ready for User Acceptance Testing</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fullscreen Modal -->
+    <div class="fullscreen-modal" id="fullscreenModal">
+        <div class="fullscreen-content">
+            <button class="close-btn" onclick="closeFullscreen()">
+                ✕ Close
+            </button>
+            <div class="mermaid fullscreen-mermaid" id="fullscreenMermaid">
+                <!-- Mermaid content will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Mermaid with dark theme
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            themeVariables: {
+                primaryColor: '#00E6C3',
+                primaryTextColor: '#FFFFFF',
+                primaryBorderColor: '#00E6C3',
+                lineColor: '#00E6C3',
+                secondaryColor: '#1C1C1E',
+                tertiaryColor: '#2A2A2C',
+                background: '#121212',
+                mainBkg: '#1C1C1E',
+                secondBkg: '#2A2A2C',
+                tertiaryColor: '#D0D0D0',
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '16px'
+            },
+            flowchart: {
+                nodeSpacing: 70,
+                rankSpacing: 80,
+                curve: 'linear',
+                padding: 20
+            }
+        });
+
+        // Trigger animations when the page loads
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const animatedElements = document.querySelectorAll('.animate-on-load');
+                animatedElements.forEach(element => {
+                    element.classList.add('start-animation');
+                });
+            }, 300);
+
+            // Setup fullscreen modal event listeners after page load
+            const modal = document.getElementById('fullscreenModal');
+            
+            // Close fullscreen on Escape key
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    closeFullscreen();
+                }
+            });
+
+            // Close fullscreen when clicking outside the content
+            modal.addEventListener('click', (event) => {
+                if (event.target.id === 'fullscreenModal') {
+                    closeFullscreen();
+                }
+            });
+        });
+
+        // Fullscreen functionality
+        function openFullscreen() {
+            const modal = document.getElementById('fullscreenModal');
+            const fullscreenMermaid = document.getElementById('fullscreenMermaid');
+            
+            modal.classList.add('active');
+            
+            // Define the mermaid diagram
+            const diagramDefinition = `flowchart LR
+                A[.knwf Files] --> B[Parse & Extract]
+                B --> C[Node Analysis]
+                C --> D[SQL Generation]
+                D --> E[Semantic Clustering]
+                E --> F[Function Creation]
+                F --> G[Code Quality Check]
+                G --> H[Deploy to Foundry]
+                
+                B --> I[(knime_nodes)]
+                B --> J[(knime_connections)]
+                D --> K[(nodes_with_sql)]
+                E --> L[(clustered_nodes)]
+                F --> M[(canonical_functions)]
+                
+                style A fill:#1C1C1E,stroke:#00E6C3,stroke-width:2px,color:#FFFFFF
+                style H fill:#1C1C1E,stroke:#00E6C3,stroke-width:2px,color:#FFFFFF
+                style I fill:#2A2A2C,stroke:#00E6C3,stroke-width:1px,color:#D0D0D0
+                style J fill:#2A2A2C,stroke:#00E6C3,stroke-width:1px,color:#D0D0D0
+                style K fill:#2A2A2C,stroke:#00E6C3,stroke-width:1px,color:#D0D0D0
+                style L fill:#2A2A2C,stroke:#00E6C3,stroke-width:1px,color:#D0D0D0
+                style M fill:#2A2A2C,stroke:#00E6C3,stroke-width:1px,color:#D0D0D0`;
+            
+            // Clear and set content
+            fullscreenMermaid.innerHTML = diagramDefinition;
+            fullscreenMermaid.removeAttribute('data-processed');
+            
+            // Render the mermaid diagram
+            setTimeout(() => {
+                try {
+                    mermaid.init(undefined, fullscreenMermaid);
+                } catch (error) {
+                    console.error('Mermaid rendering error:', error);
+                    // Force re-render with fullscreen optimized settings
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'dark',
+                        themeVariables: {
+                            primaryColor: '#00E6C3',
+                            primaryTextColor: '#FFFFFF',
+                            primaryBorderColor: '#00E6C3',
+                            lineColor: '#00E6C3',
+                            secondaryColor: '#1C1C1E',
+                            tertiaryColor: '#2A2A2C',
+                            background: '#121212',
+                            mainBkg: '#1C1C1E',
+                            secondBkg: '#2A2A2C',
+                            fontFamily: 'Inter, sans-serif',
+                            fontSize: '14px'
+                        },
+                        flowchart: {
+                            nodeSpacing: 50,
+                            rankSpacing: 60,
+                            curve: 'linear',
+                            padding: 15
+                        }
+                    });
+                    mermaid.init(undefined, fullscreenMermaid);
+                }
+            }, 300);
+        }
+
+        function closeFullscreen() {
+            const modal = document.getElementById('fullscreenModal');
+            modal.classList.remove('active');
+        }
+    </script>
+</body>
+</html>

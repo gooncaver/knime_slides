@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KNIME to Python</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/@blueprintjs/icons@^5.0.0/lib/css/blueprint-icons.css" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F0F0F0;
+            color: #000000;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #121212;
+            border-radius: 16px;
+            padding: 48px;
+            position: relative;
+            color: #FFFFFF;
+        }
+        .slide-subtitle {
+            font-size: 14px;
+            color: #D0D0D0;
+            font-weight: 400;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        /* Navigation pill */
+        .nav-pill {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #4A4A4A;
+            color: #FFFFFF;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Pagination dots */
+        .pagination {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid #D0D0D0;
+            background-color: transparent;
+        }
+
+        .dot.active {
+            background-color: #FFFFFF;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 10px;
+            color: #D0D0D0;
+        }
+
+        /* Content Container */
+        .content-container {
+            margin-top: 20px;
+        }
+
+        /* Format 3 - Multi-Column Cards */
+        .headline-area {
+            margin-bottom: 20px;
+        }
+
+        .slide-title {
+            font-size: 60px;
+            font-weight: 900;
+            line-height: 0.85;
+            margin-bottom: 10px;
+            color: #FFFFFF;
+        }
+
+        .persona-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 24px;
+            height: 400px;
+            align-items: stretch;
+        }
+
+        .persona-card {
+            background: #2C2C2E;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            justify-content: space-between;
+        }
+
+        .persona-card:nth-child(1) { animation-delay: 0.4s; }
+        .persona-card:nth-child(2) { animation-delay: 0.6s; }
+        .persona-card:nth-child(3) { animation-delay: 0.8s; }
+
+        .card-watermark {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 60px;
+            opacity: 0.06;
+            color: #FFFFFF;
+            z-index: 1;
+            pointer-events: none;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+        }
+
+        .role-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #FFFFFF;
+            margin-bottom: 12px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .technical-focus {
+            font-size: 13px;
+            font-weight: 400;
+            color: #D0D0D0;
+            margin-bottom: 16px;
+            flex-grow: 1;
+            line-height: 1.3;
+            z-index: 2;
+            position: relative;
+        }
+
+        .core-competencies {
+            margin-bottom: 0px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .competency-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #00E6C3;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .competency-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .competency-item {
+            font-size: 11px;
+            font-weight: 400;
+            color: #D0D0D0;
+            padding-left: 12px;
+            position: relative;
+            line-height: 1.2;
+        }
+
+        .competency-item::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: #00E6C3;
+        }
+
+        .specialization-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 12px;
+        }
+
+        .tag {
+            background: rgba(0, 230, 195, 0.1);
+            border: 1px solid rgba(0, 230, 195, 0.3);
+            padding: 3px 8px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 500;
+            color: #00E6C3;
+        }
+
+        .converter-highlight {
+            background: rgba(44, 44, 46, 0.5);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .highlight-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #FFFFFF;
+        }
+
+        .highlight-description {
+            font-size: 14px;
+            font-weight: 400;
+            color: #D0D0D0;
+            line-height: 1.4;
+        }
+
+        .emphasis {
+            color: #00E6C3;
+            font-weight: 600;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Animation classes */
+        .animate-on-load {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        .animate-on-load.start-animation {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+        .delay-5 { transition-delay: 0.5s; }
+        .delay-6 { transition-delay: 0.6s; }
+        .delay-7 { transition-delay: 0.7s; }
+        .delay-8 { transition-delay: 0.8s; }
+        .delay-9 { transition-delay: 0.9s; }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="nav-pill">Q2 Business Update</div>
+        
+        <div class="pagination">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+
+        <div class="footer">© 2025 Athinia Technologies LLC. All rights reserved.</div>
+
+        <!-- Content Container -->
+        <div class="content-container">
+            <!-- Headline Area -->
+            <div class="headline-area">
+                <h1 class="slide-title animate-on-load delay-1">User Profiles</h1>
+                <div class="slide-subtitle animate-on-load delay-2">
+                    Target Personas for KNIME to Python Conversion
+                </div>
+            </div>
+
+            <!-- Persona Cards Grid -->
+            <div class="persona-grid">
+                <!-- Data Scientist Persona -->
+                <div class="persona-card animate-on-load delay-2">
+                    <div class="card-watermark">📊</div>
+                    
+                    <div class="role-title">Statistical Computing Specialist</div>
+                    
+                    <div class="technical-focus">
+                        Applies advanced statistical methodology and domain expertise to ensure AI-generated code preserves the mathematical rigor and scientific validity of analytical workflows. Validates that statistical assumptions, probability distributions, and methodological approaches are correctly translated from visual node representations to computational implementations.
+                    </div>
+                    
+                    <div class="core-competencies">
+                        <div class="competency-title">Core Technical Competencies</div>
+                        <div class="competency-list">
+                            <div class="competency-item">Advanced statistical modeling and hypothesis testing</div>
+                            <div class="competency-item">Python scientific computing stack (NumPy, SciPy, Pandas)</div>
+                            <div class="competency-item">Mathematical validation of algorithmic transformations</div>
+                            <div class="competency-item">Domain-specific knowledge for contextual accuracy</div>
+                            <div class="competency-item">Code review for statistical correctness</div>
+                        </div>
+                    </div>
+                    
+                    <div class="specialization-tags">
+                        <span class="tag">Statistics</span>
+                        <span class="tag">Domain Knowledge</span>
+                        <span class="tag">Python Scientific</span>
+                        <span class="tag">Mathematical Validation</span>
+                    </div>
+                </div>
+
+                <!-- Data Engineer Persona -->
+                <div class="persona-card animate-on-load delay-3">
+                    <div class="card-watermark">⚙️</div>
+                    
+                    <div class="role-title">Production Systems Architect</div>
+                    
+                    <div class="technical-focus">
+                        Transforms prototype AI-generated code into enterprise-grade, scalable solutions that integrate seamlessly with existing data infrastructure. Ensures performance optimization, security compliance, and maintainability while establishing robust CI/CD pipelines for systematic deployment and monitoring.
+                    </div>
+                    
+                    <div class="core-competencies">
+                        <div class="competency-title">Core Technical Competencies</div>
+                        <div class="competency-list">
+                            <div class="competency-item">Enterprise Python development and architecture patterns</div>
+                            <div class="competency-item">CI/CD pipeline design and implementation</div>
+                            <div class="competency-item">Performance profiling and optimization techniques</div>
+                            <div class="competency-item">Security hardening and compliance validation</div>
+                            <div class="competency-item">Distributed systems and scalability engineering</div>
+                        </div>
+                    </div>
+                    
+                    <div class="specialization-tags">
+                        <span class="tag">Architecture</span>
+                        <span class="tag">CI/CD</span>
+                        <span class="tag">Performance</span>
+                        <span class="tag">Enterprise Systems</span>
+                        <span class="tag">Scalability</span>
+                    </div>
+                </div>
+
+                <!-- Domain Expert Persona -->
+                <div class="persona-card animate-on-load delay-4">
+                    <div class="card-watermark">🎯</div>
+                    
+                    <div class="role-title">Business Logic Validator</div>
+                    
+                    <div class="technical-focus">
+                        Ensures that converted algorithms preserve the institutional knowledge, regulatory requirements, and business rules embedded within legacy workflows. Provides critical validation that AI-generated code maintains operational compliance and delivers results consistent with established organizational standards.
+                    </div>
+                    
+                    <div class="core-competencies">
+                        <div class="competency-title">Core Technical Competencies</div>
+                        <div class="competency-list">
+                            <div class="competency-item">Deep understanding of business process logic</div>
+                            <div class="competency-item">Regulatory compliance and validation frameworks</div>
+                            <div class="competency-item">Quality assurance methodologies and testing</div>
+                            <div class="competency-item">Cross-functional communication and documentation</div>
+                            <div class="competency-item">Risk assessment and mitigation strategies</div>
+                        </div>
+                    </div>
+                    
+                    <div class="specialization-tags">
+                        <span class="tag">Business Logic</span>
+                        <span class="tag">Regulatory</span>
+                        <span class="tag">Process Knowledge</span>
+                        <span class="tag">Quality Assurance</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Converter Highlight -->
+            <div class="converter-highlight animate-on-load delay-5">
+                <div class="highlight-title">Optimal User Profile for KNIME Conversion Success</div>
+                <div class="highlight-description">
+                    The most effective users demonstrate <span class="emphasis">multi-disciplinary technical proficiency</span> 
+                    spanning statistical computing, software engineering, and domain expertise. They serve as the critical 
+                    interface between AI automation and human validation, ensuring converted functions meet both 
+                    computational requirements and organizational standards.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Trigger animations when the page loads
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const animatedElements = document.querySelectorAll('.animate-on-load');
+                animatedElements.forEach(element => {
+                    element.classList.add('start-animation');
+                });
+            }, 300);
+        });
+    </script>
+</body>
+</html>

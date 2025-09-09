@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Architecture Overview - KNIME Converter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/@blueprintjs/core@^5.0.0/lib/css/blueprint.css" rel="stylesheet" />
+    <link href="https://unpkg.com/@blueprintjs/icons@^5.0.0/lib/css/blueprint-icons.css" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, Helvetica, Arial, sans-serif;
+            background-color: #F0F0F0;
+            color: #000000;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #121212;
+            border-radius: 16px;
+            padding: 32px 48px 60px 48px;
+            position: relative;
+            color: #FFFFFF;
+        }
+
+        /* Navigation pill */
+        .nav-pill {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #4A4A4A;
+            color: #FFFFFF;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Pagination dots */
+        .pagination {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid #D0D0D0;
+            background-color: transparent;
+        }
+
+        .dot.active {
+            background-color: #FFFFFF;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 10px;
+            color: #D0D0D0;
+        }
+
+        /* Main content */
+        .slide-headline {
+            font-size: 54px;
+            text-align: left;
+            font-weight: 900;
+            line-height: 0.85;
+            margin-bottom: 16px;
+            margin-top: 30px;
+            color: #FFFFFF;
+        }
+
+        .slide-subtitle {
+            font-size: 14px;
+            color: #D0D0D0;
+            font-weight: 400;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Architecture flow layout */
+        .architecture-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            height: 440px;
+            overflow: hidden;
+        }
+
+        .flow-stage {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border-left: 4px solid #00E6C3;
+            transition: all 0.3s ease;
+            min-height: 70px;
+        }
+
+        .flow-stage:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(8px);
+        }
+
+        .stage-number {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #00E6C3, #00B8A9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 900;
+            color: #121212;
+            flex-shrink: 0;
+        }
+
+        .stage-icon {
+            width: 28px;
+            height: 28px;
+            background: #4A4A4A;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .stage-icon .bp5-icon {
+            font-size: 14px;
+            color: #FFFFFF;
+        }
+
+        .stage-content {
+            flex: 1;
+        }
+
+        .stage-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 4px;
+        }
+
+        .stage-description {
+            font-size: 11px;
+            color: #D0D0D0;
+            line-height: 1.2;
+        }
+
+        .stage-tech {
+            display: flex;
+            gap: 6px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+
+        .tech-tag {
+            background: rgba(0, 230, 195, 0.2);
+            color: #00E6C3;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 9px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .flow-arrow {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            color: #4A4A4A;
+        }
+
+        .flow-arrow .bp5-icon {
+            font-size: 16px;
+        }
+
+        /* Remove all absolute positioning classes */
+
+        /* Animation classes */
+        .animate-on-load {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        .animate-on-load.start-animation {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+        .delay-5 { transition-delay: 0.5s; }
+        .delay-6 { transition-delay: 0.6s; }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="nav-pill">KNIME to Python</div>
+        
+        <div class="pagination">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+
+        <div class="footer">© 2025 Athinia Technologies LLC. All rights reserved.</div>
+
+        <h1 class="slide-headline animate-on-load delay-1">
+            User Flow
+        </h1>
+        <div class="slide-subtitle animate-on-load delay-2">
+            AI-Augmented Migration Factory
+        </div>
+
+        <div class="architecture-flow">
+            <!-- Stage 1: Data Ingestion -->
+            <div class="flow-stage animate-on-load delay-3">
+                <div class="stage-number">1</div>
+                <div class="stage-icon">
+                    <img src="imgs/knwf_logo.png" alt="KNWF" style="width: 16px; height: 16px; object-fit: contain;">
+                </div>
+                <div class="stage-content">
+                    <div class="stage-title">KNIME Workflow Ingestion & Parsing</div>
+                    <div class="stage-description">
+                        High-performance XML processing pipelines ingest and parse thousands of .knwf files, extracting nodes and connections into structured datasets
+                    </div>
+                    <div class="stage-tech">
+                        <span class="tech-tag">Code Repositories</span>
+                        <span class="tech-tag">XML Processing</span>
+                        <span class="tech-tag">Python</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flow-arrow animate-on-load delay-3">
+                <span class="bp5-icon bp5-icon-arrow-down"></span>
+            </div>
+
+            <!-- Stage 2: AI Translation -->
+            <div class="flow-stage animate-on-load delay-4">
+                <div class="stage-number">2</div>
+                <div class="stage-icon">
+                    <span class="bp5-icon bp5-icon-translate"></span>
+                </div>
+                <div class="stage-content">
+                    <div class="stage-title">LLM-Based Node-to-SQL Generation</div>
+                    <div class="stage-description">
+                        AI Logic Functions translate each KNIME node's XML configuration into standardized SQL SELECT statements for semantic analysis
+                    </div>
+                    <div class="stage-tech">
+                        <span class="tech-tag">AIP Logic Functions</span>
+                        <span class="tech-tag">LLM Translation</span>
+                        <span class="tech-tag">SQL Generation</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flow-arrow animate-on-load delay-4">
+                <span class="bp5-icon bp5-icon-arrow-down"></span>
+            </div>
+
+            <!-- Stage 3: Clustering -->
+            <div class="flow-stage animate-on-load delay-5">
+                <div class="stage-number">3</div>
+                <div class="stage-icon">
+                    <span class="bp5-icon bp5-icon-diagram-tree"></span>
+                </div>
+                <div class="stage-content">
+                    <div class="stage-title">Vectorization & Semantic Clustering</div>
+                    <div class="stage-description">
+                        Code-aware transformers vectorize SQL logic, enabling scalable clustering of functionally similar nodes across entire workflow repositories
+                    </div>
+                    <div class="stage-tech">
+                        <span class="tech-tag">Vector Embeddings</span>
+                        <span class="tech-tag">Semantic Clustering</span>
+                        <span class="tech-tag">Pattern Recognition</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flow-arrow animate-on-load delay-5">
+                <span class="bp5-icon bp5-icon-arrow-down"></span>
+            </div>
+
+            <!-- Stage 4: Function Generation -->
+            <div class="flow-stage animate-on-load delay-6">
+                <div class="stage-number">4</div>
+                <div class="stage-icon">
+                    <span class="bp5-icon bp5-icon-code"></span>
+                </div>
+                <div class="stage-content">
+                    <div class="stage-title">Canonical Function Creation & Validation</div>
+                    <div class="stage-description">
+                        Human-guided Workshop applications with AI assistance generate, test, and validate production-ready Python functions for the canonical library
+                    </div>
+                    <div class="stage-tech">
+                        <span class="tech-tag">Workshop Apps</span>
+                        <span class="tech-tag">Human-in-Loop</span>
+                        <span class="tech-tag">Quality Gates</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Trigger animations when the page loads
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const animatedElements = document.querySelectorAll('.animate-on-load');
+                animatedElements.forEach(element => {
+                    element.classList.add('start-animation');
+                });
+            }, 300);
+        });
+    </script>
+</body>
+</html>

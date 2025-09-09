@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KNIME Converter Presentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, Helvetica, Arial, sans-serif;
+            background-color: #000000;
+            color: #FFFFFF;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .presentation-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background-color: #F0F0F0;
+        }
+
+        .navigation-overlay {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #FFFFFF;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .slide-counter {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .controls-hint {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #D0D0D0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .controls-hint.hidden {
+            opacity: 0;
+        }
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #121212;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #00E6C3;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 16px;
+            color: #FFFFFF;
+            font-weight: 500;
+        }
+
+        /* Slide transition effects */
+        .slide-frame.transitioning {
+            opacity: 0.7;
+            transform: scale(0.98);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        /* Fullscreen button */
+        .fullscreen-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background-color: rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #FFFFFF;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: background-color 0.2s ease;
+        }
+
+        .fullscreen-btn:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Loading KNIME Converter Presentation...</div>
+    </div>
+
+    <div class="presentation-container">
+        <iframe 
+            id="slideFrame" 
+            class="slide-frame" 
+            src="slide1.html"
+            title="KNIME Converter Slide">
+        </iframe>
+    </div>
+
+    <button class="fullscreen-btn" id="fullscreenBtn" onclick="toggleFullscreen()">
+        Enter Fullscreen
+    </button>
+
+    <div class="navigation-overlay">
+        <div class="slide-counter">
+            <span id="currentSlide">1</span>
+            <span>/</span>
+            <span id="totalSlides">13</span>
+        </div>
+    </div>
+
+    <div class="controls-hint" id="controlsHint">
+        Use ← → arrow keys to navigate • ESC to exit fullscreen
+    </div>
+
+    <script>
+        class SlidePresentation {
+            constructor() {
+                this.currentSlide = 1;
+                this.totalSlides = 13;
+                this.slideFrame = document.getElementById('slideFrame');
+                this.currentSlideElement = document.getElementById('currentSlide');
+                this.loadingScreen = document.getElementById('loadingScreen');
+                this.controlsHint = document.getElementById('controlsHint');
+                this.fullscreenBtn = document.getElementById('fullscreenBtn');
+                
+                this.init();
+            }
+
+            init() {
+                // Hide loading screen after initial load
+                setTimeout(() => {
+                    this.loadingScreen.classList.add('hidden');
+                }, 1000);
+
+                // Hide controls hint after 5 seconds
+                setTimeout(() => {
+                    this.controlsHint.classList.add('hidden');
+                }, 5000);
+
+                // Event listeners
+                document.addEventListener('keydown', this.handleKeyPress.bind(this));
+                document.addEventListener('fullscreenchange', this.handleFullscreenChange.bind(this));
+                
+                // Update slide counter
+                this.updateSlideCounter();
+                
+                // Preload next slide for smooth transitions
+                this.preloadSlide(this.currentSlide + 1);
+            }
+
+            handleKeyPress(event) {
+                switch(event.key) {
+                    case 'ArrowLeft':
+                    case 'ArrowUp':
+                        event.preventDefault();
+                        this.previousSlide();
+                        break;
+                    case 'ArrowRight':
+                    case 'ArrowDown':
+                    case ' ': // Spacebar
+                        event.preventDefault();
+                        this.nextSlide();
+                        break;
+                    case 'Home':
+                        event.preventDefault();
+                        this.goToSlide(1);
+                        break;
+                    case 'End':
+                        event.preventDefault();
+                        this.goToSlide(this.totalSlides);
+                        break;
+                    case 'Escape':
+                        if (document.fullscreenElement) {
+                            document.exitFullscreen();
+                        }
+                        break;
+                    case 'f':
+                    case 'F':
+                        if (event.ctrlKey || event.metaKey) {
+                            event.preventDefault();
+                            this.toggleFullscreen();
+                        }
+                        break;
+                }
+            }
+
+            nextSlide() {
+                if (this.currentSlide < this.totalSlides) {
+                    this.goToSlide(this.currentSlide + 1);
+                }
+            }
+
+            previousSlide() {
+                if (this.currentSlide > 1) {
+                    this.goToSlide(this.currentSlide - 1);
+                }
+            }
+
+            goToSlide(slideNumber) {
+                if (slideNumber >= 1 && slideNumber <= this.totalSlides) {
+                    this.currentSlide = slideNumber;
+                    
+                    // Add transition effect
+                    this.slideFrame.classList.add('transitioning');
+                    
+                    // Load new slide
+                    setTimeout(() => {
+                        this.slideFrame.src = `slide${slideNumber}.html`;
+                        this.updateSlideCounter();
+                        
+                        // Preload adjacent slides
+                        this.preloadSlide(slideNumber - 1);
+                        this.preloadSlide(slideNumber + 1);
+                        
+                        // Remove transition effect
+                        setTimeout(() => {
+                            this.slideFrame.classList.remove('transitioning');
+                        }, 100);
+                    }, 100);
+                }
+            }
+
+            updateSlideCounter() {
+                this.currentSlideElement.textContent = this.currentSlide;
+            }
+
+            preloadSlide(slideNumber) {
+                if (slideNumber >= 1 && slideNumber <= this.totalSlides) {
+                    const link = document.createElement('link');
+                    link.rel = 'prefetch';
+                    link.href = `slide${slideNumber}.html`;
+                    document.head.appendChild(link);
+                }
+            }
+
+            toggleFullscreen() {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(err => {
+                        console.warn('Could not enter fullscreen:', err);
+                    });
+                } else {
+                    document.exitFullscreen();
+                }
+            }
+
+            handleFullscreenChange() {
+                const isFullscreen = !!document.fullscreenElement;
+                this.fullscreenBtn.textContent = isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen';
+                
+                // Show/hide controls hint based on fullscreen state
+                if (isFullscreen) {
+                    this.controlsHint.classList.remove('hidden');
+                    setTimeout(() => {
+                        this.controlsHint.classList.add('hidden');
+                    }, 3000);
+                }
+            }
+        }
+
+        // Initialize presentation when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new SlidePresentation();
+        });
+
+        // Global function for fullscreen button
+        function toggleFullscreen() {
+            if (window.presentation) {
+                window.presentation.toggleFullscreen();
+            }
+        }
+
+        // Make presentation globally accessible
+        window.addEventListener('load', () => {
+            window.presentation = new SlidePresentation();
+        });
+
+        // Handle page visibility changes (for better performance)
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                // Pause any animations or reduce activity when tab is not visible
+                console.log('Presentation paused');
+            } else {
+                console.log('Presentation resumed');
+            }
+        });
+    </script>
+</body>
+</html>
