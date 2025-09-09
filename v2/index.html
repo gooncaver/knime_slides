@@ -146,6 +146,57 @@
         .fullscreen-btn:hover {
             background-color: rgba(0, 0, 0, 0.9);
         }
+
+        /* Navigation Chevrons */
+        .nav-chevron {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1001;
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+            background-color: rgba(0, 0, 0, 0.08);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s ease, opacity 0.3s ease;
+            opacity: 0; /* Hidden by default */
+        }
+
+        .presentation-container:hover .nav-chevron {
+            opacity: 1; /* Show on hover over presentation */
+        }
+
+        .nav-chevron:hover {
+            background-color: rgba(0, 0, 0, 0.354);
+        }
+
+        .nav-chevron.left {
+            left: 20px;
+        }
+
+        .nav-chevron.right {
+            right: 20px;
+        }
+
+        .nav-chevron::before {
+            content: '';
+            display: block;
+            width: 12px;
+            height: 12px;
+            border-top: 2px solid #FFFFFF;
+            border-right: 2px solid #FFFFFF;
+        }
+
+        .nav-chevron.left::before {
+            transform: translateX(2px) rotate(-135deg);
+        }
+
+        .nav-chevron.right::before {
+            transform: translateX(-2px) rotate(45deg);
+        }
     </style>
 </head>
 <body>
@@ -161,6 +212,8 @@
             src="slide1.html"
             title="KNIME Converter Slide">
         </iframe>
+        <div class="nav-chevron left" id="prevBtn"></div>
+        <div class="nav-chevron right" id="nextBtn"></div>
     </div>
 
     <button class="fullscreen-btn" id="fullscreenBtn" onclick="toggleFullscreen()">
@@ -189,6 +242,8 @@
                 this.loadingScreen = document.getElementById('loadingScreen');
                 this.controlsHint = document.getElementById('controlsHint');
                 this.fullscreenBtn = document.getElementById('fullscreenBtn');
+                this.prevBtn = document.getElementById('prevBtn');
+                this.nextBtn = document.getElementById('nextBtn');
                 
                 this.init();
             }
@@ -207,6 +262,8 @@
                 // Event listeners
                 document.addEventListener('keydown', this.handleKeyPress.bind(this));
                 document.addEventListener('fullscreenchange', this.handleFullscreenChange.bind(this));
+                this.prevBtn.addEventListener('click', this.previousSlide.bind(this));
+                this.nextBtn.addEventListener('click', this.nextSlide.bind(this));
                 
                 // Update slide counter
                 this.updateSlideCounter();
