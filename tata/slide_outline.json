@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "title": "Tata × Palantir — Out‑Innovate, Not Out‑Scale",
+    "author": "Darren Teo",
+    "date": "2025-09-16",
+    "classification": "Internal"
+  },
+  "global": {
+    "theme": "dark_card_on_light_canvas",
+    "palette": {"card":"#121212","canvas":"#F0F0F0","text":"#FFFFFF","accent":"#00E6C3"},
+    "typography": {"title":{"size":72,"weight":700},"body":{"size":14,"weight":400}},
+    "chrome": {"navPill": true, "dots": true, "footer": "© 2025 ⊙ Palantir"}
+  },
+  "slides": [
+    {
+      "id": 1, "template": "Format2", "navPill": "INTRO",
+      "title": "Out‑Innovate, Not Out‑Scale",
+      "bullets": [
+        "Knowledge velocity is Tata’s edge.",
+        "Foundry ONTOLOGY + AIP: capture tacit know‑how as computable, governed objects."
+      ]
+    },
+    {
+      "id": 2, "template": "Format5", "navPill": "CONTEXT-1",
+      "title": "China’s Scale: 10 GW Centralization (Speakers’ View)",
+      "bullets": [
+        ">1M H20-class GPUs aggregated; heavy-industry power repurposed.",
+        "Months vs. years for multi‑GW sites; optimize time‑to‑learning, not megawatts."
+      ],
+      "bigNumber": "10 GW"
+    },
+    {
+      "id": 3, "template": "Format14", "navPill": "CONTEXT-2",
+      "title": "Exposure & IP Risk: Materials + ASML Context",
+      "bullets": [
+        "Materials concentration → systemic fragility.",
+        "High China share of ASML revenue (recent quarters).",
+        "Security strip: speakers allege repeated ASML hacks; civil actions."
+      ]
+    },
+    {
+      "id": 4, "template": "Format2", "navPill": "PROBLEM",
+      "title": "Master‑Apprentice ≠ Scalable",
+      "bullets": [
+        "Tacit know‑how doesn’t diffuse fast enough.",
+        "Encode business knowledge as shared, governed ONTOLOGY."
+      ]
+    },
+    {
+      "id": 5, "template": "Format1", "navPill": "SOLUTION-1",
+      "title": "Why ONTOLOGY ⇒ Velocity",
+      "bullets": [
+        "Typed graph: Event/Actor/Activity/Location/Material/Product + links.",
+        "Exploration without new ETL; lineage in seconds; rules & templates for reuse."
+      ]
+    },
+    {
+      "id": 6, "template": "Format1", "navPill": "SOLUTION-2",
+      "title": "Two‑Path Architecture (Fast + Governed)",
+      "bullets": [
+        "First Path: normalize feeds → Events.",
+        "Second Path: AIP proposes facts/links → human validation → writeback.",
+        "Rules & Action Types; object/link access; masking; audit."
+      ]
+    },
+    {
+      "id": 7, "template": "Format4", "navPill": "SOLUTION-3",
+      "title": "From ‘Tell Me’ to ‘Let Me Explore’ (Velocity KPIs)",
+      "bullets": [
+        "TTFI ↓; Hypothesis Throughput ↑; Decision Latency ↓;",
+        "Knowledge Reuse ↑; Continuity ↑; Coverage 100% (pilot scope)."
+      ]
+    },
+    {
+      "id": 8, "template": "Format1", "navPill": "CONTEXT-3",
+      "title": "China Centralization vs. US‑Style Centralization of Information",
+      "bullets": [
+        "Speakers: SOE-driven picks, GPU/electricity monopolization, vertical integration.",
+        "US answer: centralize information (federated, governed) across firms."
+      ]
+    },
+    {
+      "id": 9, "template": "Format8", "navPill": "ECOSYSTEM-1",
+      "title": "Athinia = US‑Style Centralization of Information",
+      "bullets": [
+        "Foundry-powered, live since 2022; cross-company workspaces.",
+        "Granular access, masking, audit, revocation; governed analytics on shared semantics."
+      ]
+    },
+    {
+      "id": 10, "template": "Format1", "navPill": "SECURITY",
+      "title": "Security Is the Feature",
+      "bullets": [
+        "Object/link access; field masking; approvals; audit; purpose-bounded usage.",
+        "Move faster safely—internally and across firms (Athinia)."
+      ]
+    },
+    {
+      "id": 11, "template": "Format4", "navPill": "PILOT-90D",
+      "title": "90‑Day Pilot KPIs",
+      "bullets": [
+        "ETA variance ↓ ≥15% (top‑5 lanes); RCA time ↓ ≥10% (3 defects).",
+        "+2 engineer apps; 100% coverage; 24/7 rules; weekly Exec Slate."
+      ]
+    },
+    {
+      "id": 12, "template": "Format12", "navPill": "ROADMAP-12M",
+      "title": "6–12 Month Roadmap",
+      "bullets": [
+        "M0–3: Control tower, rules, apps, Exec Slate, audit #1.",
+        "M3–6: IoT+QC, end‑to‑end lineage, template kits, Athinia workspaces, audit #2.",
+        "M6–12: Supplier risk scoring, RCA suggestions, cohorts, audits."
+      ]
+    },
+    {
+      "id": 13, "template": "Format2", "navPill": "CTA",
+      "title": "Call to Action: Build the Knowledge Ecosystem",
+      "bullets": [
+        "Adopt ONTOLOGY‑first; stand up Athinia workspaces; measure velocity weekly; template every win."
+      ]
+    }
+  ]
+}

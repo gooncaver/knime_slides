@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Edge Advantage: 500ms Response Time</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, Helvetica, Arial, sans-serif;
+            background-color: #F0F0F0;
+            color: #FFFFFF;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #121212;
+            border-radius: 16px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin: auto;
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 80px;
+        }
+
+        .big-number-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 100%;
+        }
+
+        .section-label {
+            font-size: 16px;
+            font-weight: 500;
+            color: #00E6C3;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 40px;
+        }
+
+        .big-number {
+            font-size: 180px;
+            font-weight: 800;
+            line-height: 0.8;
+            color: #FFFFFF;
+            margin-bottom: 10px;
+            letter-spacing: -0.04em;
+            text-shadow: 0 4px 20px rgba(0, 230, 195, 0.3);
+        }
+
+        .number-unit {
+            font-size: 60px;
+            font-weight: 600;
+            color: #00E6C3;
+            margin-left: 15px;
+            vertical-align: top;
+        }
+
+        .main-headline {
+            font-size: 48px;
+            font-weight: 600;
+            line-height: 1.1;
+            color: #FFFFFF;
+            margin-bottom: 30px;
+            letter-spacing: -0.02em;
+            max-width: 800px;
+        }
+
+        .supporting-text {
+            font-size: 20px;
+            font-weight: 400;
+            line-height: 1.4;
+            color: #D0D0D0;
+            max-width: 700px;
+            margin-bottom: 50px;
+            letter-spacing: -0.01em;
+        }
+
+        .comparison-metrics {
+            display: flex;
+            gap: 80px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .metric {
+            text-align: center;
+        }
+
+        .metric-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #4A4A4A;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 10px;
+        }
+
+        .metric-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .metric.fast .metric-value {
+            color: #00E6C3;
+        }
+
+        .metric.slow .metric-value {
+            color: #FF6B6B;
+        }
+
+        .metric-desc {
+            font-size: 12px;
+            color: #4A4A4A;
+        }
+
+        .navigation-pills {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .pill {
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #D0D0D0;
+            background-color: transparent;
+        }
+
+        .pill.active {
+            background-color: #00E6C3;
+            color: #121212;
+            border-color: #00E6C3;
+        }
+
+        .pagination-dots {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .dot.active {
+            background-color: #00E6C3;
+        }
+
+        .slide-number {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            font-size: 14px;
+            color: #4A4A4A;
+            font-weight: 500;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .scale-in {
+            animation: scaleIn 1.2s ease-out;
+        }
+
+        .slide-up {
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="navigation-pills">
+            <a href="#" class="pill active">Edge</a>
+            <a href="#" class="pill">Speed</a>
+            <a href="#" class="pill">Advantage</a>
+        </div>
+
+        <div class="big-number-content">
+            <div class="section-label fade-in">The Edge Advantage</div>
+            
+            <div class="scale-in">
+                <span class="big-number">500</span>
+                <span class="number-unit">ms</span>
+            </div>
+            
+            <h1 class="main-headline slide-up">
+                Edge Intelligence<br>Response Time
+            </h1>
+            
+            <p class="supporting-text slide-up">
+                While centralized systems lag with multi-second delays, 
+                edge computing delivers real-time responsiveness that transforms operations.
+            </p>
+            
+            <div class="comparison-metrics slide-up">
+                <div class="metric fast">
+                    <div class="metric-label">Edge Response</div>
+                    <div class="metric-value">500ms</div>
+                    <div class="metric-desc">Distributed</div>
+                </div>
+                <div class="metric slow">
+                    <div class="metric-label">Central Response</div>
+                    <div class="metric-value">2.5s</div>
+                    <div class="metric-desc">Traditional</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pagination-dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+
+        <div class="slide-number">05 / 13</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const animations = [
+                { selector: '.fade-in', delay: 0 },
+                { selector: '.scale-in', delay: 0.3 },
+                { selector: '.slide-up', delay: 0.6 }
+            ];
+
+            animations.forEach(({ selector, delay }) => {
+                const elements = document.querySelectorAll(selector);
+                elements.forEach((element, index) => {
+                    element.style.animationDelay = `${delay + (index * 0.1)}s`;
+                });
+            });
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                if (window.parent && window.parent.presentation) {
+                    window.parent.presentation.nextSlide();
+                }
+            } else if (e.key === 'ArrowLeft') {
+                if (window.parent && window.parent.presentation) {
+                    window.parent.presentation.previousSlide();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

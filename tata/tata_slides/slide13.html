@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, Helvetica, Arial, sans-serif;
+            background-color: #F0F0F0;
+            color: #FFFFFF;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #121212;
+            border-radius: 16px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 80px;
+        }
+
+        .thank-you-content {
+            text-align: center;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .section-label {
+            font-size: 16px;
+            font-weight: 500;
+            color: #00E6C3;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 40px;
+        }
+
+        .thank-you-title {
+            font-size: 120px;
+            font-weight: 700;
+            line-height: 0.9;
+            letter-spacing: -0.04em;
+            color: #FFFFFF;
+            margin-bottom: 30px;
+            text-shadow: 0 4px 20px rgba(0, 230, 195, 0.3);
+        }
+
+        .closing-message {
+            font-size: 28px;
+            font-weight: 400;
+            line-height: 1.4;
+            color: #D0D0D0;
+            margin-bottom: 50px;
+            letter-spacing: -0.01em;
+        }
+
+        .signature-section {
+            display: flex;
+            justify-content: center;
+            gap: 100px;
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .signature {
+            text-align: center;
+        }
+
+        .company-logo {
+            width: 120px;
+            height: 60px;
+            background: linear-gradient(135deg, #00E6C3 0%, #00A89E 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #121212;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .company-logo.tata {
+            background: linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%);
+        }
+
+        .company-logo::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: rotate(45deg);
+            animation: logoShine 4s ease-in-out infinite;
+        }
+
+        .company-name {
+            font-size: 20px;
+            font-weight: 600;
+            color: #FFFFFF;
+            margin-bottom: 8px;
+        }
+
+        .company-tagline {
+            font-size: 14px;
+            color: #4A4A4A;
+            font-style: italic;
+        }
+
+        .partnership-symbol {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 40px;
+            color: #00E6C3;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .final-quote {
+            margin-top: 50px;
+            font-size: 18px;
+            font-style: italic;
+            color: #00E6C3;
+            opacity: 0.8;
+        }
+
+        .navigation-pills {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .pill {
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #D0D0D0;
+            background-color: transparent;
+        }
+
+        .pill.active {
+            background-color: #00E6C3;
+            color: #121212;
+            border-color: #00E6C3;
+        }
+
+        .pagination-dots {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .dot.active {
+            background-color: #00E6C3;
+        }
+
+        .slide-number {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            font-size: 14px;
+            color: #4A4A4A;
+            font-weight: 500;
+        }
+
+        .fade-in {
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        .slide-up {
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .scale-in {
+            animation: scaleIn 1.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes logoShine {
+            0%, 100% { transform: translateX(-200%) translateY(-200%) rotate(45deg); }
+            50% { transform: translateX(200%) translateY(200%) rotate(45deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            50% { 
+                transform: translate(-50%, -50%) scale(1.1);
+                opacity: 0.7;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="navigation-pills">
+            <a href="#" class="pill active">Thank You</a>
+            <a href="#" class="pill">Partnership</a>
+            <a href="#" class="pill">Future</a>
+        </div>
+
+        <div class="thank-you-content">
+            <div class="section-label fade-in">Out‑Innovate, Not Out‑Scale</div>
+            
+            <h1 class="thank-you-title scale-in">
+                Thank You
+            </h1>
+            
+            <p class="closing-message slide-up">
+                Together, we're not just building the future—<br>
+                we're distributing intelligence to create it everywhere.
+            </p>
+            
+            <div class="signature-section slide-up">
+                <div class="signature">
+                    <div class="company-logo tata">TATA</div>
+                    <div class="company-name">Tata Group</div>
+                    <div class="company-tagline">Excellence Through Innovation</div>
+                </div>
+                
+                <div class="partnership-symbol">×</div>
+                
+                <div class="signature">
+                    <div class="company-logo">PLTR</div>
+                    <div class="company-name">Palantir</div>
+                    <div class="company-tagline">Data-Driven Decisions</div>
+                </div>
+            </div>
+            
+            <div class="final-quote slide-up">
+                "The future is distributed. The future is now."
+            </div>
+        </div>
+
+        <div class="pagination-dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot active"></div>
+        </div>
+
+        <div class="slide-number">13 / 13</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const animations = [
+                { selector: '.fade-in', delay: 0 },
+                { selector: '.scale-in', delay: 0.5 },
+                { selector: '.slide-up', delay: 1.0 }
+            ];
+
+            animations.forEach(({ selector, delay }) => {
+                const elements = document.querySelectorAll(selector);
+                elements.forEach((element, index) => {
+                    element.style.animationDelay = `${delay + (index * 0.2)}s`;
+                });
+            });
+
+            // Add special finishing effect
+            setTimeout(() => {
+                const title = document.querySelector('.thank-you-title');
+                title.style.textShadow = '0 4px 30px rgba(0, 230, 195, 0.6), 0 0 60px rgba(0, 230, 195, 0.4)';
+                
+                setTimeout(() => {
+                    title.style.textShadow = '0 4px 20px rgba(0, 230, 195, 0.3)';
+                }, 2000);
+            }, 3000);
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                // End of presentation - could restart or show summary
+                console.log('End of presentation reached');
+            } else if (e.key === 'ArrowLeft') {
+                if (window.parent && window.parent.presentation) {
+                    window.parent.presentation.previousSlide();
+                }
+            } else if (e.key === 'Home') {
+                if (window.parent && window.parent.presentation) {
+                    window.parent.presentation.goToSlide(1);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

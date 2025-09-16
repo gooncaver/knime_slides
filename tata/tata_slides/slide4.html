@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Distributed Intelligence Wins</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, Helvetica, Arial, sans-serif;
+            background-color: #F0F0F0;
+            color: #FFFFFF;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #121212;
+            border-radius: 16px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 80px;
+        }
+
+        .manifesto-content {
+            text-align: center;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .section-label {
+            font-size: 16px;
+            font-weight: 500;
+            color: #00E6C3;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 30px;
+        }
+
+        .manifesto-title {
+            font-size: 72px;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            color: #FFFFFF;
+            margin-bottom: 40px;
+        }
+
+        .manifesto-description {
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #D0D0D0;
+            max-width: 800px;
+            margin: 0 auto 50px;
+            letter-spacing: -0.01em;
+        }
+
+        .key-points {
+            display: flex;
+            justify-content: space-around;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .point {
+            text-align: center;
+            max-width: 200px;
+        }
+
+        .point-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #00E6C3;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 24px;
+            color: #121212;
+            font-weight: 700;
+        }
+
+        .point-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #FFFFFF;
+            margin-bottom: 10px;
+        }
+
+        .point-desc {
+            font-size: 14px;
+            color: #4A4A4A;
+            line-height: 1.4;
+        }
+
+        .navigation-pills {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .pill {
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #D0D0D0;
+            background-color: transparent;
+        }
+
+        .pill.active {
+            background-color: #00E6C3;
+            color: #121212;
+            border-color: #00E6C3;
+        }
+
+        .pagination-dots {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .dot.active {
+            background-color: #00E6C3;
+        }
+
+        .slide-number {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            font-size: 14px;
+            color: #4A4A4A;
+            font-weight: 500;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .slide-up {
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="navigation-pills">
+            <a href="#" class="pill active">Intelligence</a>
+            <a href="#" class="pill">Distributed</a>
+            <a href="#" class="pill">Advantage</a>
+        </div>
+
+        <div class="manifesto-content">
+            <div class="section-label fade-in">The Paradigm</div>
+            <h1 class="manifesto-title slide-up">Why Distributed<br>Intelligence Wins</h1>
+            <p class="manifesto-description slide-up">
+                In an era of exponential complexity, centralized systems hit scaling limits. 
+                Distributed intelligence adapts, evolves, and outmaneuvers at every level.
+            </p>
+            
+            <div class="key-points slide-up">
+                <div class="point">
+                    <div class="point-icon">⚡</div>
+                    <div class="point-title">Speed</div>
+                    <div class="point-desc">Local decisions at edge</div>
+                </div>
+                <div class="point">
+                    <div class="point-icon">🔄</div>
+                    <div class="point-title">Resilience</div>
+                    <div class="point-desc">No single point of failure</div>
+                </div>
+                <div class="point">
+                    <div class="point-icon">🎯</div>
+                    <div class="point-title">Precision</div>
+                    <div class="point-desc">Context-aware responses</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pagination-dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+
+        <div class="slide-number">04 / 13</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const elements = document.querySelectorAll('.fade-in, .slide-up');
+            elements.forEach((element, index) => {
+                element.style.animationDelay = `${index * 0.2}s`;
+            });
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                if (window.parent && window.parent.presentation) {
+                    window.parent.presentation.nextSlide();
+                }
+            } else if (e.key === 'ArrowLeft') {
+                if (window.parent && window.parent.presentation) {
+                    window.parent.presentation.previousSlide();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

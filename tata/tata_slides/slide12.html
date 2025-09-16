@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ready to Scale Intelligence?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, Helvetica, Arial, sans-serif;
+            background-color: #F0F0F0;
+            color: #FFFFFF;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #121212;
+            border-radius: 16px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 80px;
+        }
+
+        .cta-content {
+            text-align: center;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .section-label {
+            font-size: 16px;
+            font-weight: 500;
+            color: #00E6C3;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 40px;
+        }
+
+        .cta-title {
+            font-size: 80px;
+            font-weight: 700;
+            line-height: 1.0;
+            letter-spacing: -0.03em;
+            color: #FFFFFF;
+            margin-bottom: 40px;
+        }
+
+        .title-question {
+            color: #00E6C3;
+        }
+
+        .cta-description {
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #D0D0D0;
+            max-width: 800px;
+            margin: 0 auto 60px;
+            letter-spacing: -0.01em;
+        }
+
+        .action-options {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            margin-top: 50px;
+        }
+
+        .action-card {
+            background: linear-gradient(135deg, rgba(0, 230, 195, 0.1) 0%, rgba(0, 168, 158, 0.05) 100%);
+            border: 2px solid rgba(0, 230, 195, 0.3);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            max-width: 280px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-card:hover {
+            transform: translateY(-8px);
+            border-color: #00E6C3;
+            box-shadow: 0 20px 40px rgba(0, 230, 195, 0.2);
+        }
+
+        .action-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .action-card:hover::before {
+            left: 100%;
+        }
+
+        .action-icon {
+            width: 80px;
+            height: 80px;
+            background-color: #00E6C3;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 36px;
+            color: #121212;
+            font-weight: 700;
+        }
+
+        .action-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #FFFFFF;
+            margin-bottom: 15px;
+        }
+
+        .action-desc {
+            font-size: 14px;
+            color: #D0D0D0;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        .action-button {
+            background-color: #00E6C3;
+            color: #121212;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .action-button:hover {
+            background-color: #FFFFFF;
+            transform: scale(1.05);
+        }
+
+        .contact-info {
+            margin-top: 60px;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .contact-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #00E6C3;
+            margin-bottom: 15px;
+        }
+
+        .contact-details {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            font-size: 14px;
+            color: #D0D0D0;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .contact-icon {
+            width: 20px;
+            height: 20px;
+            background-color: #00E6C3;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #121212;
+        }
+
+        .navigation-pills {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .pill {
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #D0D0D0;
+            background-color: transparent;
+        }
+
+        .pill.active {
+            background-color: #00E6C3;
+            color: #121212;
+            border-color: #00E6C3;
+        }
+
+        .pagination-dots {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .dot.active {
+            background-color: #00E6C3;
+        }
+
+        .slide-number {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            font-size: 14px;
+            color: #4A4A4A;
+            font-weight: 500;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .slide-up {
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="navigation-pills">
+            <a href="#" class="pill active">Call to Action</a>
+            <a href="#" class="pill">Next Steps</a>
+            <a href="#" class="pill">Contact</a>
+        </div>
+
+        <div class="cta-content">
+            <div class="section-label fade-in">The Next Step</div>
+            
+            <h1 class="cta-title slide-up">
+                Ready to Scale<br><span class="title-question">Intelligence?</span>
+            </h1>
+            
+            <p class="cta-description slide-up">
+                Don't just scale operations—scale intelligence. Join the distributed revolution 
+                and transform your organization into an adaptive, intelligent network.
+            </p>
+            
+            <div class="action-options slide-up">
+                <div class="action-card">
+                    <div class="action-icon">🚀</div>
+                    <div class="action-title">Start Pilot Program</div>
+                    <div class="action-desc">
+                        Begin with a focused deployment at one facility to demonstrate immediate value and ROI.
+                    </div>
+                    <button class="action-button">Launch Pilot</button>
+                </div>
+                
+                <div class="action-card">
+                    <div class="action-icon">📊</div>
+                    <div class="action-title">Strategic Assessment</div>
+                    <div class="action-desc">
+                        Comprehensive analysis of your operations to identify optimal distributed intelligence opportunities.
+                    </div>
+                    <button class="action-button">Schedule Assessment</button>
+                </div>
+                
+                <div class="action-card">
+                    <div class="action-icon">🤝</div>
+                    <div class="action-title">Partnership Discussion</div>
+                    <div class="action-desc">
+                        Explore how Tata and Palantir can co-create the future of intelligent operations.
+                    </div>
+                    <button class="action-button">Connect Now</button>
+                </div>
+            </div>
+            
+            <div class="contact-info slide-up">
+                <div class="contact-title">Ready to Begin?</div>
+                <div class="contact-details">
+                    <div class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <span>partnerships@palantir.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">🌐</div>
+                        <span>palantir.com/tata-partnership</span>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📞</div>
+                        <span>+1 (650) 555-0199</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pagination-dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot active"></div>
+            <div class="dot"></div>
+        </div>
+
+        <div class="slide-number">12 / 13</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const elements = document.querySelectorAll('.fade-in, .slide-up');
+            elements.forEach((element, index) => {
+                element.style.animationDelay = `${index * 0.3}s`;
+            });
+        });
+
+        // Interactive action cards
+        document.querySelectorAll('.action-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const button = this.querySelector('.action-button');
+                const title = this.querySelector('.action-title').textContent;
+                
+                // Simulate action
+                button.textContent = 'Connecting...';
+                button.style.backgroundColor = '#4A4A4A';
+                
+                setTimeout(() => {
+                    alert(`Initiating: ${title}\n\nA Palantir representative will contact you within 24 hours.`);
+                    button.textContent = button.textContent.replace('Connecting...', button.textContent);
+                    button.style.backgroundColor = '#00E6C3';
+                }, 1500);
+            });
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                if (window.parent && window.parent.presentation) {
+                    window.parent.presentation.nextSlide();
+                }
+            } else if (e.key === 'ArrowLeft') {
+                if (window.parent && window.parent.presentation) {
+                    window.parent.presentation.previousSlide();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

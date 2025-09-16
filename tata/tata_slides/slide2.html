@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>China's Scale: Centralization at 10 GW</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, Helvetica, Arial, sans-serif;
+            background-color: #F0F0F0;
+            color: #000000;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #121212;
+            border-radius: 16px;
+            padding: 48px;
+            position: relative;
+            color: #FFFFFF;
+        }
+
+        /* Navigation pill */
+        .nav-pill {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #4A4A4A;
+            color: #FFFFFF;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Pagination dots */
+        .pagination {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #4A4A4A;
+        }
+
+        .dot.active {
+            background-color: #00E6C3;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 12px;
+            color: #4A4A4A;
+        }
+
+        /* Hero block - central big number */
+        .hero-block {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -60%);
+            text-align: center;
+            opacity: 0;
+            transition: all 0.8s ease;
+        }
+
+        .hero-block.start-animation {
+            opacity: 1;
+            transform: translate(-50%, -60%);
+        }
+
+        .hero-number {
+            font-size: 96px;
+            font-weight: 900;
+            color: #FFFFFF;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+        }
+
+        .hero-descriptor {
+            font-size: 18px;
+            font-weight: 400;
+            color: #CCCCCC;
+            max-width: 400px;
+            line-height: 1.4;
+        }
+
+        /* Support cards - bottom section */
+        .support-cards {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 40px;
+            opacity: 0;
+            transition: all 0.8s ease 0.3s;
+        }
+
+        .support-cards.start-animation {
+            opacity: 1;
+        }
+
+        .support-card {
+            background-color: #2C2C2E;
+            border-radius: 16px;
+            padding: 32px;
+            min-width: 280px;
+            text-align: center;
+        }
+
+        .support-number {
+            font-size: 48px;
+            font-weight: 900;
+            color: #FFFFFF;
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+
+        .support-descriptor {
+            font-size: 14px;
+            font-weight: 400;
+            color: #CCCCCC;
+            line-height: 1.4;
+        }
+
+        /* Strategic context - top left */
+        .strategic-context {
+            position: absolute;
+            top: 80px;
+            left: 48px;
+            max-width: 480px;
+            opacity: 0;
+            transition: all 0.8s ease 0.6s;
+        }
+
+        .strategic-context.start-animation {
+            opacity: 1;
+        }
+
+        .context-text {
+            font-size: 14px;
+            font-weight: 400;
+            color: #CCCCCC;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .context-emphasis {
+            color: #FFFFFF;
+            font-weight: 500;
+        }
+
+        /* Footnote */
+        .footnote {
+            position: absolute;
+            bottom: 60px;
+            left: 48px;
+            font-size: 11px;
+            color: #666666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Navigation pill -->
+        <div class="nav-pill">CONTEXT-1</div>
+
+        <!-- Strategic context -->
+        <div class="strategic-context">
+            <div class="context-text">
+                Transcript speakers assert China can <span class="context-emphasis">aggregate >1 million NVIDIA H20-class GPUs</span> despite constraints, and repurpose heavy-industry power to stand up <span class="context-emphasis">multi-GW AI sites in months</span> vs. Western years.
+            </div>
+            <div class="context-text">
+                If even half true, <span class="context-emphasis">centralization speed</span> is the strategic differentiator. Tata wins by shrinking <span class="context-emphasis">think→try→learn cycles</span>, not by copy-pasting China's power build-out.
+            </div>
+        </div>
+
+        <!-- Hero block -->
+        <div class="hero-block">
+            <div class="hero-number">10 GW</div>
+            <div class="hero-descriptor">Potential single-site training cluster<br>(speakers' view)</div>
+        </div>
+
+        <!-- Support cards -->
+        <div class="support-cards">
+            <div class="support-card">
+                <div class="support-number">1,000,000+</div>
+                <div class="support-descriptor">H20-class GPUs<br>(2025 inflow; transcript view)</div>
+            </div>
+            <div class="support-card">
+                <div class="support-number">≈5 GW</div>
+                <div class="support-descriptor">Single smelter load—<br>redirectable magnitude</div>
+            </div>
+        </div>
+
+        <!-- Footnote -->
+        <div class="footnote">* Speaker-attributed context; potential/feasible upper bound per speakers</div>
+
+        <!-- Pagination dots -->
+        <div class="pagination">
+            <div class="dot"></div>
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">© 2025 ⊙ Palantir</div>
+    </div>
+
+    <script>
+        // Trigger animations after page load
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.querySelector('.hero-block').classList.add('start-animation');
+                document.querySelector('.support-cards').classList.add('start-animation');
+                document.querySelector('.strategic-context').classList.add('start-animation');
+            }, 200);
+        });
+    </script>
+</body>
+</html>
