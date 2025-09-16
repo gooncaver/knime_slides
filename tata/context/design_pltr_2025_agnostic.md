@@ -231,7 +231,7 @@ Of course. Here is the completely content-agnostic guide for that slide format, 
     *   **Text & Icons:** High-contrast off-white (`#FFFFFF`).
 *   **Spacing:** While the grid is asymmetrical, there is a clear visual logic and enough negative space around each image-text unit to prevent the slide from feeling chaotic and to ensure each point is distinct and readable.
 
-Here are the new, unique slide formats extracted from the Palantir Q2 2022 Business Update, extending the provided design guide. Each new format is distinct from the original seven and from each other.
+Here are the new, unique slide formats extracted from the Athinia Q2 2022 Business Update, extending the provided design guide. Each new format is distinct from the original seven and from each other.
 
 ---
 
@@ -267,7 +267,7 @@ Here are the new, unique slide formats extracted from the Palantir Q2 2022 Busin
 **Detailed Design & Aesthetic Specifications:**
 
 *   **Overall Aesthetic:** Dynamic, dense, and narrative-driven. It's meant to feel like a collage of evidence, conveying a wide range of capabilities and successes at a glance.
-*   **Headline:** A powerful, declarative headline is placed at the top left (e.g., "When it has to work, there is only Palantir.").
+*   **Headline:** A powerful, declarative headline is placed at the top left (e.g., "When it has to work, there is only Athinia.").
 *   **Grid Elements:**
     *   **Image & Text Pairs:** The core of the slide is a collection of thematic images, each paired with a short, bulleted text description. The text is not a caption but a statement of the outcome or action (e.g., "• Supporting mission outcomes for Ukraine and powering refugee relief").
     *   **Layout:** The pairs are arranged in an offset, multi-column grid that feels organic rather than rigid. The size of the images may vary to create visual hierarchy. The text is placed near its corresponding image (above, below, or to the side).

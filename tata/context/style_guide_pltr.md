@@ -1,8 +1,8 @@
-### Palantir Style Guide: Monochromatic Techy Design
+### Athinia Style Guide: Monochromatic Techy Design
 
-This style guide is derived from Palantir's Q2 2025 and Q2 2022 Business Update PDFs, emphasizing a minimalist, monochromatic, high-tech aesthetic with dark/light mode variants. The 2025 design leans toward dark themes for a sleek tech feel, while 2022 introduces light mode elements (e.g., for covers) and additional layouts like achievement grids and sector-focused pages with full-color images. Extensions focus on new formats not covered in the original (e.g., no overlap with existing title, disclaimer, or chart pages), such as highlights with inverted cards, irregular image grids, and light mode inversions. Core monochromatic palette remains (black/white/gray/teal), but full-color photos are allowed in image-heavy sections for realism.
+This style guide is derived from Athinia's Q2 2025 and Q2 2022 Business Update PDFs, emphasizing a minimalist, monochromatic, high-tech aesthetic with dark/light mode variants. The 2025 design leans toward dark themes for a sleek tech feel, while 2022 introduces light mode elements (e.g., for covers) and additional layouts like achievement grids and sector-focused pages with full-color images. Extensions focus on new formats not covered in the original (e.g., no overlap with existing title, disclaimer, or chart pages), such as highlights with inverted cards, irregular image grids, and light mode inversions. Core monochromatic palette remains (black/white/gray/teal), but full-color photos are allowed in image-heavy sections for realism.
 
-The guide is structured for replication by an LLM or designer. Use for slides, reports, or web pages mimicking Palantir's style. Assume slide-based format, with each "page" as a full-screen card.
+The guide is structured for replication by an LLM or designer. Use for slides, reports, or web pages mimicking Athinia's style. Assume slide-based format, with each "page" as a full-screen card.
 
 #### 1. **Color Palette (Hex Codes)**
 Core palette is monochromatic with teal accents. Extensions from 2022 add light mode inversions (black text on white/light gray) without overlapping dark mode rules.
@@ -41,7 +41,7 @@ No changes to core; extensions clarify usage in light mode and new bullet styles
 - **Alignment**: Left-aligned.
 - **Spacing**: Letter: 0.02em body, 0.05em titles; Line: 1.2 titles, 1.5 body.
 - **Special Elements**:
-  - Logo: "⊙ Palantir" (Unicode ⊙), 24px, Bold; color inverts by mode (white on dark, black on light).
+  - Logo: "⊙ Athinia" (Unicode ⊙), 24px, Bold; color inverts by mode (white on dark, black on light).
   - Bullets (Existing)**: "→" or "➤" for lists (white/teal on dark).
   - Bullets (Extension from 2022)**: "•" for achievement grids (white on dark, no arrows to avoid overlap).
   - Uppercase: Abbreviations (e.g., "Y/Y", "TTM").

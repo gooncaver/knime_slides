@@ -1,11 +1,11 @@
-# TATA × Palantir — 13‑Slide Reading Deck (Ultra‑Verbose Outline)
+# TATA × Athinia — 13‑Slide Reading Deck (Ultra‑Verbose Outline)
 **Subtitle:** Out‑Innovate, Not Out‑Scale
 **Author:** Darren Teo • **Date:** 16 Sep 2025 (GMT+8)
 **Classification:** Internal Use Only
 
 **Design system anchors** (applies to all slides unless overridden):
 - **Templates:** Use PLTR 2025 agnostic design guide formats; each slide below maps to a specific template for faithful reproduction.
-- **Style tokens:** Dark card `#121212` on light canvas `#F0F0F0`; Inter type; titles 72/700 (0.05em, LH 1.2), body 14/400 (LH 1.5); teal accent `#00E6C3`; rounded 16px; nav pill top‑left; pagination dots bottom‑center; footer “© 2025 ⊙ Palantir”.
+- **Style tokens:** Dark card `#121212` on light canvas `#F0F0F0`; Inter type; titles 72/700 (0.05em, LH 1.2), body 14/400 (LH 1.5); teal accent `#00E6C3`; rounded 16px; nav pill top‑left; pagination dots bottom‑center; footer “© 2025 ⊙ Athinia”.
 
 ---
 
@@ -14,7 +14,7 @@
 **Nav Pill:** INTRO
 
 ### 1) Executive intent (what a reader should conclude)
-Tata’s path to rival Chinese scale **does not** hinge on replicating grid megawatts or state‑driven centralization. It hinges on **knowledge velocity**: the speed at which we turn raw signals into shared understanding and governed action. **Palantir Foundry’s ONTOLOGY** (with AIP) captures tacit process know‑how as **computable, queryable, and auditable objects**—so *every* engineer can explore, reason, and act like the best specialists, **without waiting** on master–apprentice transfers or new one‑off pipelines.
+Tata’s path to rival Chinese scale **does not** hinge on replicating grid megawatts or state‑driven centralization. It hinges on **knowledge velocity**: the speed at which we turn raw signals into shared understanding and governed action. **Athinia Foundry’s ONTOLOGY** (with AIP) captures tacit process know‑how as **computable, queryable, and auditable objects**—so *every* engineer can explore, reason, and act like the best specialists, **without waiting** on master–apprentice transfers or new one‑off pipelines.
 
 ### 2) Reading copy (on‑slide, long‑form)
 Forget siloed expertise. Embrace shared intelligence. Semiconductor excellence has been built by master craftspeople, but scaling that mastery requires **institutional memory** that compounds:
@@ -259,7 +259,7 @@ Position **Athinia (on Foundry)** as the *already‑operational* mechanism by wh
 
 ### 2) Reading copy (on‑slide, long‑form)
 **A. What Athinia is**
-- A **secure data collaboration platform** for the semiconductor ecosystem, **powered by Palantir Foundry**, **commercially deployed since 2022**.
+- A **secure data collaboration platform** for the semiconductor ecosystem, **powered by Athinia Foundry**, **commercially deployed since 2022**.
 - Enables **cross‑company workspaces** with **granular access control**, **field‑level masking**, **policy enforcement**, **auditing**, and **revocation**.
 - Delivers **governed analytics/AI** atop **shared semantics** (not uncontrolled data lakes).
 

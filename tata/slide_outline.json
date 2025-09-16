@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Tata × Palantir — Out‑Innovate, Not Out‑Scale",
+    "title": "Tata × Athinia — Out‑Innovate, Not Out‑Scale",
     "author": "Darren Teo",
     "date": "2025-09-16",
     "classification": "Internal"
@@ -9,7 +9,7 @@
     "theme": "dark_card_on_light_canvas",
     "palette": {"card":"#121212","canvas":"#F0F0F0","text":"#FFFFFF","accent":"#00E6C3"},
     "typography": {"title":{"size":72,"weight":700},"body":{"size":14,"weight":400}},
-    "chrome": {"navPill": true, "dots": true, "footer": "© 2025 ⊙ Palantir"}
+    "chrome": {"navPill": true, "dots": true, "footer": "© 2025 ⊙ Athinia"}
   },
   "slides": [
     {

@@ -18,10 +18,18 @@
   .hero { font-size:84px; font-weight:900; letter-spacing:0.01em; line-height:0.98; max-width:1100px; }
   .subhero { margin-top:20px; font-size:28px; font-weight:500; letter-spacing:0.01em; color:#00E6C3; max-width:820px; }
   .lead { margin-top:34px; font-size:18px; font-weight:500; line-height:1.35; max-width:880px; color:#E2E2E2; }
-  .actions { margin-top:34px; list-style:none; font-size:16px; font-weight:400; line-height:1.42; display:flex; flex-direction:column; gap:14px; max-width:900px; }
-  .actions li { position:relative; padding-left:22px; }
-  .actions li:before { content:"→"; position:absolute; left:0; top:0; color:#00E6C3; font-weight:600; }
-  .closing { margin-top:36px; font-size:14px; line-height:1.45; max-width:760px; color:#A8A8A8; letter-spacing:0.01em; }
+  /* Concept C layout */
+  .anchor-imperative { margin-top:46px; font-size:40px; font-weight:700; line-height:1.1; letter-spacing:0.01em; max-width:980px; }
+  .anchor-imperative strong { background:linear-gradient(92deg,#00E6C3 0%, #7FFFEF 55%, #FFFFFF 100%); -webkit-background-clip:text; background-clip:text; color:transparent; position:relative; display:inline-block; filter:drop-shadow(0 0 8px rgba(0,230,195,0.15)); }
+  .anchor-imperative strong::after { content:""; position:absolute; left:0; bottom:-6px; height:3px; width:100%; background:linear-gradient(90deg,#00E6C3 0%, #7FFFEF 55%, #FFFFFF 100%); border-radius:2px; transform:scaleX(0); transform-origin:left center; transition:transform .6s cubic-bezier(.65,.05,.36,1) .55s; }
+  .start .anchor-imperative strong::after { transform:scaleX(1); }
+  .wings { margin-top:42px; display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:54px; max-width:1040px; }
+  .wing { display:flex; flex-direction:column; gap:14px; }
+  .wing h3 { font-size:18px; font-weight:600; letter-spacing:0.01em; color:#FFFFFF; }
+  .wing h3 span { color:#00E6C3; font-weight:600; }
+  .wing p { font-size:14px; line-height:1.5; color:#C8C8C8; }
+  .wing p strong { color:#FFFFFF; font-weight:600; }
+  .closing { margin-top:54px; font-size:14px; line-height:1.45; max-width:760px; color:#A8A8A8; letter-spacing:0.01em; }
 
   /* Animations */
   .animate { opacity:0; transform:translateY(30px); transition:opacity .8s cubic-bezier(.16,.78,.24,1), transform .8s cubic-bezier(.16,.78,.24,1); }
@@ -39,23 +47,27 @@
   <div class="slide" id="root">
     <div class="nav-pill" aria-label="Navigation Pill">CTA</div>
 
-    <div class="hero animate delay-1" aria-label="Hero statement">Out‑Innovate, Not Out‑Scale.</div>
-    <div class="subhero animate delay-2" aria-label="Sub-hero statement">Centralize information, not ownership.</div>
+  <div class="hero animate delay-1" aria-label="Hero statement">Out‑Innovate, Not Out‑Scale</div>
+  <div class="subhero animate delay-2" aria-label="Sub-hero statement">Centralize information, not ownership</div>
   <div class="lead animate delay-3" aria-label="Lead line">Compound knowledge velocity. Make it the operating model.</div>
-    <ul class="actions animate delay-4" aria-label="Call to action bullet list">
-  <li><strong>Ontology first:</strong> Events • Actors • Activities = one shared language.</li>
-  <li><strong>Athinia federation:</strong> Governed supplier workspaces; information centralized, IP retained.</li>
-  <li><strong>Instrument velocity:</strong> Weekly TTFI • HT • DL to Exec Slate.</li>
-  <li><strong>Template the win:</strong> Investigation → Rule + Template → kit → reuse.</li>
-    </ul>
-  <div class="closing animate delay-5" aria-label="Closing rationale">This is how Tata shrinks time‑to‑capability and compounds advantage through governed knowledge flow.</div>
+  <div class="anchor-imperative animate delay-4" aria-label="Primary imperative"><strong>Go Ontology-first</strong> <br> One semantic spine for every exploration.</div>
+  <div class="wings animate delay-5" aria-label="Supporting imperatives" role="group">
+    <div class="wing" aria-label="Federate via Athinia">
+      <h3><span>Federate</span> via Athinia</h3>
+      <p>Spin up <strong>governed supplier workspaces</strong>; centralize information—not ownership—using <strong>masking, revocation, audit</strong>. IP stays distributed.</p>
+    </div>
+    <div class="wing" aria-label="Instrument & Template">
+      <h3><span>Instrument</span> & Template</h3>
+      <p>Ship weekly <strong>TTFI • HT • DL</strong>. Each investigation → <strong>Rule + Template</strong> → reusable kit. Velocity compounds automatically.</p>
+    </div>
+  </div>
 
     <!-- Next steps card removed for minimalist aesthetic -->
 
     <div class="pagination" aria-label="Pagination Dots">
       <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot active"></div>
     </div>
-    <div class="footer">© 2025 ⊙ Palantir</div>
+    <div class="footer">© 2025 ⊙ Athinia</div>
   </div>
   <script>
     window.addEventListener('load', () => setTimeout(()=>document.getElementById('root').classList.add('start'), 180));
