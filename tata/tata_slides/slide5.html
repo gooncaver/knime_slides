@@ -1,324 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Edge Advantage: 500ms Response Time</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Why ONTOLOGY ⇒ Velocity</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter', system-ui, Helvetica, Arial, sans-serif; background:#F0F0F0; color:#000; overflow:hidden; min-height:100vh; display:flex; align-items:center; justify-content:center; }
+  .slide-container { width:1280px; height:720px; background:#121212; border-radius:16px; padding:62px 60px 90px 60px; color:#FFFFFF; position:relative; display:flex; flex-direction:column; }
+  .nav-pill { position:absolute; top:20px; left:20px; background:#2A2A2C; color:#FFF; padding:8px 18px; border-radius:999px; font-size:12px; font-weight:500; letter-spacing:0.06em; box-shadow:0 0 0 1px #3A3A3C; }
+  .footer { position:absolute; bottom:22px; left:24px; font-size:10px; color:#D0D0D0; }
+  .pagination { position:absolute; bottom:24px; left:50%; transform:translateX(-50%); display:flex; gap:8px; }
+  .dot { width:12px; height:12px; border-radius:50%; border:1px solid #D0D0D0; background:transparent; }
+  .dot.active { background:#FFFFFF; }
 
-        body {
-            font-family: 'Inter', system-ui, Helvetica, Arial, sans-serif;
-            background-color: #F0F0F0;
-            color: #FFFFFF;
-            overflow: hidden;
-            height: 100vh;
-            width: 100vw;
-        }
+  /* Left content column only now */
+  .content-wrap { position:relative; width:56%; display:flex; flex-direction:column; margin-top:28px; gap:38px; }
+  .section { display:flex; flex-direction:column; gap:14px; }
+  .sec-head { font-size:14px; font-weight:600; letter-spacing:0.08em; color:#00E6C3; text-transform:uppercase; }
+  .hero-title { font-size:54px; font-weight:800; line-height:1.05; letter-spacing:0.01em; max-width:1000px; margin-bottom:18px; }
+  .exec-intent { font-size:15px; line-height:1.45; color:#CFCFCF; margin-top:12px; max-width:700px; }
+  .list-block { font-size:13px; line-height:1.5; color:#D8D8D8; display:flex; flex-direction:column; gap:4px; }
+  .arrow-list { list-style:none; display:flex; flex-direction:column; gap:4px; }
+  .arrow-list li { position:relative; padding-left:22px; }
+  .arrow-list li:before { content:"→"; position:absolute; left:0; top:0; color:#00E6C3; font-weight:600; }
 
-        .slide-container {
-            width: 1280px;
-            height: 720px;
-            background-color: #121212;
-            border-radius: 16px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            margin: auto;
-            top: 50%;
-            transform: translateY(-50%);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            padding: 80px;
-        }
+  /* Floating diagram positioned relative to slide-container */
+  .diagram-float { position:absolute; top:132px; right:60px; width:440px; }
+  .diagram-card { background:#1C1C1E; border:1px solid #2A2A2C; border-radius:18px; padding:20px 24px 20px 24px; display:flex; flex-direction:column; }
+  .diagram-title { font-size:12px; font-weight:600; letter-spacing:0.08em; color:#7ADFCC; text-transform:uppercase; margin-bottom:14px; }
+  .graph { flex:1; position:relative; min-height:300px; }
+  svg { width:100%; height:100%; overflow:visible; }
+  .edge { stroke:#6A6A6A; stroke-width:1.6; stroke-linecap:round; marker-end:url(#arrow); opacity:0.95; }
+  .node { fill:#242426; stroke:#3A3A3C; stroke-width:1.1; filter:drop-shadow(0 2px 2px rgba(0,0,0,0.35)); }
+  .node.event { fill:#00E6C3; stroke:#00B598; }
+  .node-label { font-size:11px; font-family:'Inter', sans-serif; font-weight:500; fill:#EDEDED; pointer-events:none; }
+  .node.event + .node-label { fill:#053B33; font-weight:700; }
+  .legend { margin-top:10px; display:flex; gap:14px; flex-wrap:wrap; font-size:10px; color:#B8B8B8; }
+  .legend .swatch { width:12px; height:12px; border-radius:3px; background:#2A2A2C; border:1px solid #3A3A3C; }
+  .legend .swatch.event { background:#00E6C3; border:1px solid #00B598; }
+  .impl-notes { margin-top:8px; font-size:10px; line-height:1.35; color:#9A9A9A; }
+  .impl-notes strong { color:#CFCFCF; font-weight:600; }
 
-        .big-number-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            height: 100%;
-        }
+  /* Animations */
+  .animate { opacity:0; transform:translateY(30px); transition:opacity .75s cubic-bezier(.16,.78,.24,1), transform .75s cubic-bezier(.16,.78,.24,1); }
+  .delay-1 { transition-delay:.15s; }
+  .delay-2 { transition-delay:.3s; }
+  .delay-3 { transition-delay:.45s; }
+  .delay-4 { transition-delay:.6s; }
+  .start .animate { opacity:1; transform:translateY(0); }
 
-        .section-label {
-            font-size: 16px;
-            font-weight: 500;
-            color: #00E6C3;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 40px;
-        }
-
-        .big-number {
-            font-size: 180px;
-            font-weight: 800;
-            line-height: 0.8;
-            color: #FFFFFF;
-            margin-bottom: 10px;
-            letter-spacing: -0.04em;
-            text-shadow: 0 4px 20px rgba(0, 230, 195, 0.3);
-        }
-
-        .number-unit {
-            font-size: 60px;
-            font-weight: 600;
-            color: #00E6C3;
-            margin-left: 15px;
-            vertical-align: top;
-        }
-
-        .main-headline {
-            font-size: 48px;
-            font-weight: 600;
-            line-height: 1.1;
-            color: #FFFFFF;
-            margin-bottom: 30px;
-            letter-spacing: -0.02em;
-            max-width: 800px;
-        }
-
-        .supporting-text {
-            font-size: 20px;
-            font-weight: 400;
-            line-height: 1.4;
-            color: #D0D0D0;
-            max-width: 700px;
-            margin-bottom: 50px;
-            letter-spacing: -0.01em;
-        }
-
-        .comparison-metrics {
-            display: flex;
-            gap: 80px;
-            justify-content: center;
-            margin-top: 40px;
-        }
-
-        .metric {
-            text-align: center;
-        }
-
-        .metric-label {
-            font-size: 14px;
-            font-weight: 500;
-            color: #4A4A4A;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 10px;
-        }
-
-        .metric-value {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .metric.fast .metric-value {
-            color: #00E6C3;
-        }
-
-        .metric.slow .metric-value {
-            color: #FF6B6B;
-        }
-
-        .metric-desc {
-            font-size: 12px;
-            color: #4A4A4A;
-        }
-
-        .navigation-pills {
-            position: absolute;
-            top: 40px;
-            left: 40px;
-            display: flex;
-            gap: 12px;
-        }
-
-        .pill {
-            padding: 12px 20px;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: 500;
-            text-decoration: none;
-            transition: all 0.2s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #D0D0D0;
-            background-color: transparent;
-        }
-
-        .pill.active {
-            background-color: #00E6C3;
-            color: #121212;
-            border-color: #00E6C3;
-        }
-
-        .pagination-dots {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 8px;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.3);
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-
-        .dot.active {
-            background-color: #00E6C3;
-        }
-
-        .slide-number {
-            position: absolute;
-            bottom: 40px;
-            right: 40px;
-            font-size: 14px;
-            color: #4A4A4A;
-            font-weight: 500;
-        }
-
-        .fade-in {
-            animation: fadeIn 0.8s ease-out;
-        }
-
-        .scale-in {
-            animation: scaleIn 1.2s ease-out;
-        }
-
-        .slide-up {
-            animation: slideUp 0.6s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes scaleIn {
-            from {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
+  .slide-container:before { content:""; position:absolute; inset:0; background:radial-gradient(circle at 65% 35%, rgba(255,255,255,0.06), rgba(255,255,255,0) 60%); pointer-events:none; border-radius:inherit; }
+</style>
 </head>
 <body>
-    <div class="slide-container">
-        <div class="navigation-pills">
-            <a href="#" class="pill active">Edge</a>
-            <a href="#" class="pill">Speed</a>
-            <a href="#" class="pill">Advantage</a>
-        </div>
+  <div class="slide-container" id="root">
+    <div class="nav-pill" aria-label="Navigation Pill">SOLUTION‑1</div>
 
-        <div class="big-number-content">
-            <div class="section-label fade-in">The Edge Advantage</div>
-            
-            <div class="scale-in">
-                <span class="big-number">500</span>
-                <span class="number-unit">ms</span>
-            </div>
-            
-            <h1 class="main-headline slide-up">
-                Edge Intelligence<br>Response Time
-            </h1>
-            
-            <p class="supporting-text slide-up">
-                While centralized systems lag with multi-second delays, 
-                edge computing delivers real-time responsiveness that transforms operations.
-            </p>
-            
-            <div class="comparison-metrics slide-up">
-                <div class="metric fast">
-                    <div class="metric-label">Edge Response</div>
-                    <div class="metric-value">500ms</div>
-                    <div class="metric-desc">Distributed</div>
-                </div>
-                <div class="metric slow">
-                    <div class="metric-label">Central Response</div>
-                    <div class="metric-value">2.5s</div>
-                    <div class="metric-desc">Traditional</div>
-                </div>
-            </div>
-        </div>
+    <div class="hero-title animate delay-1">Why ONTOLOGY ⇒ Velocity</div>
+    <div class="exec-intent animate delay-1">Turns domain expertise into <strong>exploration speed</strong> & <strong>decision velocity</strong>—teams answer novel questions <strong>without bespoke pipelines or chasing experts</strong>.</div>
 
-        <div class="pagination-dots">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot active"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
+    <div class="diagram-float animate delay-3">
+      <div class="diagram-card" role="group" aria-label="Ontology Node-Link Diagram">
+        <div class="diagram-title">Minimal Object Graph</div>
+        <div class="graph">
+          <svg viewBox="0 0 340 360" aria-labelledby="graphTitle" role="img">
+            <title id="graphTitle">Ontology semantic spine relationships</title>
+            <defs>
+              <marker id="arrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#6A6A6A" />
+              </marker>
+            </defs>
+            <line class="edge" x1="170" y1="70" x2="90" y2="155" />
+            <line class="edge" x1="170" y1="70" x2="170" y2="155" />
+            <line class="edge" x1="170" y1="70" x2="250" y2="155" />
+            <line class="edge" x1="170" y1="155" x2="170" y2="235" />
+            <line class="edge" x1="170" y1="235" x2="170" y2="305" />
+            <g class="node event"><circle cx="170" cy="70" r="32" /></g>
+            <text class="node-label" x="170" y="75" text-anchor="middle">Event</text>
+            <g class="node"><rect x="60" y="142" rx="10" ry="10" width="60" height="30" /></g>
+            <text class="node-label" x="90" y="161" text-anchor="middle">Actor</text>
+            <g class="node"><rect x="140" y="142" rx="10" ry="10" width="60" height="30" /></g>
+            <text class="node-label" x="170" y="161" text-anchor="middle">Activity</text>
+            <g class="node"><rect x="220" y="142" rx="10" ry="10" width="60" height="30" /></g>
+            <text class="node-label" x="250" y="161" text-anchor="middle">Location</text>
+            <g class="node"><rect x="140" y="222" rx="10" ry="10" width="60" height="30" /></g>
+            <text class="node-label" x="170" y="241" text-anchor="middle">Product</text>
+            <g class="node"><rect x="60" y="222" rx="10" ry="10" width="60" height="30" /></g>
+            <text class="node-label" x="90" y="241" text-anchor="middle">Material</text>
+            <g class="node"><rect x="220" y="222" rx="10" ry="10" width="60" height="30" /></g>
+            <text class="node-label" x="250" y="241" text-anchor="middle">Rule</text>
+            <g class="node"><rect x="140" y="292" rx="10" ry="10" width="60" height="30" /></g>
+            <text class="node-label" x="170" y="311" text-anchor="middle">Template</text>
+          </svg>
         </div>
-
-        <div class="slide-number">05 / 13</div>
+        <div class="legend" aria-label="Legend"><span><span class="swatch event"></span> Event</span><span><span class="swatch"></span> Other Objects</span></div>
+        <div class="impl-notes"><strong>Governed writeback</strong> (second‑path validation). <strong>AIP proposes</strong>; humans approve; <strong>audit persists</strong>.</div>
+      </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const animations = [
-                { selector: '.fade-in', delay: 0 },
-                { selector: '.scale-in', delay: 0.3 },
-                { selector: '.slide-up', delay: 0.6 }
-            ];
+    <div class="content-wrap">
+      <div class="section animate delay-2">
+        <div class="sec-head">The Semantic Spine</div>
+        <div class="list-block">
+          <ul class="arrow-list">
+            <li><strong>Objects:</strong> Event, Actor, Activity, Location, Material, Product.</li>
+            <li><strong>Links:</strong> occursAt, performedBy, usesMaterial, produces, belongsToLot, impacts, qualifies.</li>
+            <li><strong>Properties:</strong> timestamps, IDs, lot/recipe, env context, QC attributes.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="section animate delay-3">
+        <div class="sec-head">Velocity Effects</div>
+        <div class="list-block">
+          <ul class="arrow-list">
+            <li><strong>No re‑ETL pivots:</strong> supplier‑lot → tool‑recipe → defect class instantly.</li>
+            <li><strong>Memory compounding:</strong> findings → Rule + Template (reusable assets).</li>
+            <li><strong>Continuity:</strong> graph answers; newcomers inherit decisions & evidence.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="section animate delay-4">
+        <div class="sec-head">Beats Master–Apprentice</div>
+        <div class="list-block">
+          <ul class="arrow-list">
+            <li>Apprentice asks a human. Here they <strong>ask the system</strong>—answer persists.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
-            animations.forEach(({ selector, delay }) => {
-                const elements = document.querySelectorAll(selector);
-                elements.forEach((element, index) => {
-                    element.style.animationDelay = `${delay + (index * 0.1)}s`;
-                });
-            });
-        });
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'ArrowRight' || e.key === ' ') {
-                if (window.parent && window.parent.presentation) {
-                    window.parent.presentation.nextSlide();
-                }
-            } else if (e.key === 'ArrowLeft') {
-                if (window.parent && window.parent.presentation) {
-                    window.parent.presentation.previousSlide();
-                }
-            }
-        });
-    </script>
+    <div class="pagination" aria-label="Pagination Dots">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+    <div class="footer">© 2025 Tata × Palantir. All rights reserved.</div>
+  </div>
+  <script>window.addEventListener('load', () => setTimeout(()=>document.getElementById('root').classList.add('start'), 200));</script>
 </body>
 </html>

@@ -1,451 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tata Use Case: Smart Manufacturing</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Measurable Velocity KPIs</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter', system-ui, Helvetica, Arial, sans-serif; background:#F0F0F0; color:#000; overflow:hidden; min-height:100vh; display:flex; align-items:center; justify-content:center; }
+  .slide-container { width:1280px; height:720px; background:#121212; border-radius:16px; padding:60px 60px 96px 60px; color:#FFFFFF; position:relative; display:flex; flex-direction:column; }
+  .nav-pill { position:absolute; top:20px; left:20px; background:#2A2A2C; color:#FFF; padding:8px 18px; border-radius:999px; font-size:12px; font-weight:500; letter-spacing:0.06em; box-shadow:0 0 0 1px #3A3A3C; }
+  .footer { position:absolute; bottom:22px; left:24px; font-size:10px; color:#D0D0D0; }
+  .pagination { position:absolute; bottom:24px; left:50%; transform:translateX(-50%); display:flex; gap:8px; }
+  .dot { width:12px; height:12px; border-radius:50%; border:1px solid #D0D0D0; background:transparent; }
+  .dot.active { background:#FFFFFF; }
 
-        body {
-            font-family: 'Inter', system-ui, Helvetica, Arial, sans-serif;
-            background-color: #F0F0F0;
-            color: #FFFFFF;
-            overflow: hidden;
-            height: 100vh;
-            width: 100vw;
-        }
+  .title { font-size:50px; font-weight:800; line-height:1.06; letter-spacing:0.01em; max-width:1080px; }
+  .intent { font-size:15px; line-height:1.48; color:#CFCFCF; margin-top:14px; max-width:900px; }
 
-        .slide-container {
-            width: 1280px;
-            height: 720px;
-            background-color: #121212;
-            border-radius: 16px;
-            position: relative;
-            margin: auto;
-            top: 50%;
-            transform: translateY(-50%);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            padding: 60px;
-            display: flex;
-            flex-direction: column;
-        }
+  /* KPI Grid (Format 4 adaptation) */
+  .kpi-grid { margin-top:40px; display:grid; grid-template-columns:repeat(3, 1fr); grid-auto-rows:1fr; gap:26px; }
+  .kpi { background:#2C2C2E; border:1px solid #343436; border-radius:18px; padding:22px 22px 24px; position:relative; display:flex; flex-direction:column; overflow:hidden; }
+  .kpi:before { content:""; position:absolute; top:0; left:0; height:3px; width:0; background:#00E6C3; transition:width .6s cubic-bezier(.16,.78,.24,1); }
+  .start .kpi:before { width:100%; }
+  .metric-name { font-size:22px; font-weight:700; letter-spacing:0.01em; margin-bottom:10px; line-height:1.15; }
+  .metric-body { font-size:14px; line-height:1.5; color:#D8D8D8; }
+  .metric-body strong { color:#FFFFFF; font-weight:600; }
+  .target-row { margin-top:14px; display:flex; align-items:center; gap:8px; font-size:12px; font-weight:500; letter-spacing:0.05em; color:#8FEFDF; text-transform:uppercase; }
+  .tick { width:14px; height:14px; border-radius:4px; background:#00E6C3; box-shadow:0 0 0 1px #00B598, 0 0 0 4px rgba(0,230,195,0.2); display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#063D34; }
+  /* Watermarks */
+  .kpi-watermark { position:absolute; bottom:10px; right:10px; width:110px; height:110px; opacity:0.075; background-repeat:no-repeat; background-position:center; background-size:88%; pointer-events:none; mix-blend-mode:normal; }
+  .wm-time { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 24 24' fill='none' stroke='%2300E6C3' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='8'/%3E%3Cpath d='M12 8v4l3 2'/%3E%3C/svg%3E"); }
+  .wm-hypo { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 24 24' fill='none' stroke='%2300E6C3' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 5h4v4H5zM15 5h4v4h-4zM10 7h4M7 9v6m10-6v6M5 15h4v4H5zM15 15h4v4h-4zM10 17h4'/%3E%3C/svg%3E"); }
+  .wm-decision { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 24 24' fill='none' stroke='%2300E6C3' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12h6l2-5 2 10 2-5h4'/%3E%3Ccircle cx='4' cy='12' r='1.4'/%3E%3Ccircle cx='10' cy='12' r='1.4'/%3E%3Ccircle cx='12' cy='7' r='1.4'/%3E%3Ccircle cx='14' cy='17' r='1.4'/%3E%3Ccircle cx='16' cy='12' r='1.4'/%3E%3Ccircle cx='20' cy='12' r='1.4'/%3E%3C/svg%3E"); }
+  .wm-reuse { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 24 24' fill='none' stroke='%2300E6C3' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 2v4h4M7 22v-4H3M21 6c-1.5-2.5-4.1-4-7-4-3.6 0-6.6 2.2-7.8 5.3M3 18c1.5 2.5 4.1 4 7 4 3.6 0 6.6-2.2 7.8-5.3'/%3E%3C/svg%3E"); }
+  .wm-continuity { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 24 24' fill='none' stroke='%2300E6C3' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12c0-3.866 3.582-7 8-7h2'/%3E%3Cpath d='M19 12c0 3.866-3.582 7-8 7h-2'/%3E%3Cpath d='M9 9c0-1.105.672-2 1.5-2S12 7.895 12 9s-.672 2-1.5 2S9 10.105 9 9zM12 15c0-1.105.672-2 1.5-2s1.5.895 1.5 2-.672 2-1.5 2S12 16.105 12 15z'/%3E%3C/svg%3E"); }
+  .wm-coverage { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 24 24' fill='none' stroke='%2300E6C3' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z'/%3E%3C/svg%3E"); }
 
-        .slide-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
+  /* Notes area */
+  .notes { margin-top:34px; display:flex; gap:34px; font-size:11px; line-height:1.45; color:#9A9A9A; }
+  .note-block { max-width:420px; }
+  .note-block strong { color:#CCCCCC; font-weight:600; }
+  blockquote { margin-top:24px; font-size:13px; line-height:1.5; color:#B8B8B8; padding-left:14px; border-left:3px solid #2F2F31; font-style:italic; }
+  blockquote strong { color:#FFFFFF; font-weight:600; }
 
-        .section-label {
-            font-size: 16px;
-            font-weight: 500;
-            color: #00E6C3;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 15px;
-        }
+  /* Animations */
+  .animate { opacity:0; transform:translateY(30px); transition:opacity .75s cubic-bezier(.16,.78,.24,1), transform .75s cubic-bezier(.16,.78,.24,1); }
+  .delay-1 { transition-delay:.12s; }
+  .delay-2 { transition-delay:.24s; }
+  .delay-3 { transition-delay:.36s; }
+  .delay-4 { transition-delay:.48s; }
+  .delay-5 { transition-delay:.60s; }
+  .delay-6 { transition-delay:.72s; }
+  .start .animate { opacity:1; transform:translateY(0); }
 
-        .main-headline {
-            font-size: 44px;
-            font-weight: 700;
-            line-height: 1.1;
-            color: #FFFFFF;
-            letter-spacing: -0.02em;
-            margin-bottom: 15px;
-        }
-
-        .subtitle {
-            font-size: 18px;
-            font-weight: 400;
-            color: #D0D0D0;
-            line-height: 1.4;
-        }
-
-        .use-case-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            flex: 1;
-        }
-
-        .use-case-card {
-            background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .card-icon {
-            width: 50px;
-            height: 50px;
-            background-color: #00E6C3;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: #121212;
-        }
-
-        .card-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: #FFFFFF;
-            line-height: 1.2;
-        }
-
-        .card-content {
-            flex: 1;
-        }
-
-        .problem {
-            margin-bottom: 20px;
-        }
-
-        .problem-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #FF6B6B;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 8px;
-        }
-
-        .problem-desc {
-            font-size: 14px;
-            color: #D0D0D0;
-            line-height: 1.4;
-        }
-
-        .solution {
-            margin-bottom: 20px;
-        }
-
-        .solution-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #00E6C3;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 8px;
-        }
-
-        .solution-desc {
-            font-size: 14px;
-            color: #D0D0D0;
-            line-height: 1.4;
-        }
-
-        .metrics {
-            display: flex;
-            gap: 20px;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .metric {
-            text-align: center;
-            flex: 1;
-        }
-
-        .metric-value {
-            font-size: 24px;
-            font-weight: 700;
-            color: #00E6C3;
-            margin-bottom: 4px;
-        }
-
-        .metric-label {
-            font-size: 11px;
-            color: #4A4A4A;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .navigation-pills {
-            position: absolute;
-            top: 40px;
-            left: 40px;
-            display: flex;
-            gap: 12px;
-        }
-
-        .pill {
-            padding: 12px 20px;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: 500;
-            text-decoration: none;
-            transition: all 0.2s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #D0D0D0;
-            background-color: transparent;
-        }
-
-        .pill.active {
-            background-color: #00E6C3;
-            color: #121212;
-            border-color: #00E6C3;
-        }
-
-        .pagination-dots {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 8px;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.3);
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-
-        .dot.active {
-            background-color: #00E6C3;
-        }
-
-        .slide-number {
-            position: absolute;
-            bottom: 40px;
-            right: 40px;
-            font-size: 14px;
-            color: #4A4A4A;
-            font-weight: 500;
-        }
-
-        .fade-in {
-            animation: fadeIn 0.8s ease-out;
-        }
-
-        .slide-up {
-            animation: slideUp 0.6s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
+  @media (max-width:1400px) { .title { font-size:46px; } }
+</style>
 </head>
 <body>
-    <div class="slide-container">
-        <div class="navigation-pills">
-            <a href="#" class="pill active">Use Case</a>
-            <a href="#" class="pill">Manufacturing</a>
-            <a href="#" class="pill">Results</a>
-        </div>
+  <div class="slide-container" id="root">
+    <div class="nav-pill" aria-label="Navigation Pill">SOLUTION‑3</div>
 
-        <div class="slide-header fade-in">
-            <div class="section-label">Tata Implementation</div>
-            <h1 class="main-headline">Smart Manufacturing</h1>
-            <p class="subtitle">
-                Distributed intelligence across Tata Steel's production network
-            </p>
-        </div>
+    <div class="title animate delay-1">Measurable Velocity</div>
+    <div class="intent animate delay-1">Six KPIs make velocity auditable: shift from asking people to querying the shared ontology & governed action layer.</div>
 
-        <div class="use-case-grid">
-            <div class="use-case-card slide-up">
-                <div class="card-header">
-                    <div class="card-icon">🏭</div>
-                    <div class="card-title">Predictive Maintenance</div>
-                </div>
-                <div class="card-content">
-                    <div class="problem">
-                        <div class="problem-title">Challenge</div>
-                        <div class="problem-desc">
-                            Unplanned equipment downtime causing $2M monthly losses across 12 facilities.
-                        </div>
-                    </div>
-                    <div class="solution">
-                        <div class="solution-title">Solution</div>
-                        <div class="solution-desc">
-                            Edge AI models predict failures 72 hours in advance using sensor fusion and maintenance history.
-                        </div>
-                    </div>
-                    <div class="metrics">
-                        <div class="metric">
-                            <div class="metric-value">85%</div>
-                            <div class="metric-label">Downtime Reduction</div>
-                        </div>
-                        <div class="metric">
-                            <div class="metric-value">72hr</div>
-                            <div class="metric-label">Prediction Window</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="use-case-card slide-up">
-                <div class="card-header">
-                    <div class="card-icon">⚡</div>
-                    <div class="card-title">Energy Optimization</div>
-                </div>
-                <div class="card-content">
-                    <div class="problem">
-                        <div class="problem-title">Challenge</div>
-                        <div class="problem-desc">
-                            Energy costs representing 40% of production costs with inefficient load balancing.
-                        </div>
-                    </div>
-                    <div class="solution">
-                        <div class="solution-title">Solution</div>
-                        <div class="solution-desc">
-                            Real-time optimization algorithms adjust energy distribution based on production demand and grid pricing.
-                        </div>
-                    </div>
-                    <div class="metrics">
-                        <div class="metric">
-                            <div class="metric-value">23%</div>
-                            <div class="metric-label">Energy Savings</div>
-                        </div>
-                        <div class="metric">
-                            <div class="metric-value">$8M</div>
-                            <div class="metric-label">Annual Savings</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="use-case-card slide-up">
-                <div class="card-header">
-                    <div class="card-icon">🎯</div>
-                    <div class="card-title">Quality Control</div>
-                </div>
-                <div class="card-content">
-                    <div class="problem">
-                        <div class="problem-title">Challenge</div>
-                        <div class="problem-desc">
-                            Manual quality inspection missing 15% of defects, leading to customer complaints.
-                        </div>
-                    </div>
-                    <div class="solution">
-                        <div class="solution-title">Solution</div>
-                        <div class="solution-desc">
-                            Computer vision models detect microscopic defects in real-time during production.
-                        </div>
-                    </div>
-                    <div class="metrics">
-                        <div class="metric">
-                            <div class="metric-value">99.2%</div>
-                            <div class="metric-label">Detection Rate</div>
-                        </div>
-                        <div class="metric">
-                            <div class="metric-value">Real-time</div>
-                            <div class="metric-label">Processing</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="use-case-card slide-up">
-                <div class="card-header">
-                    <div class="card-icon">📊</div>
-                    <div class="card-title">Supply Chain Visibility</div>
-                </div>
-                <div class="card-content">
-                    <div class="problem">
-                        <div class="problem-title">Challenge</div>
-                        <div class="problem-desc">
-                            Limited visibility across 500+ suppliers causing inventory inefficiencies.
-                        </div>
-                    </div>
-                    <div class="solution">
-                        <div class="solution-title">Solution</div>
-                        <div class="solution-desc">
-                            Distributed tracking and analytics provide end-to-end supply chain transparency.
-                        </div>
-                    </div>
-                    <div class="metrics">
-                        <div class="metric">
-                            <div class="metric-value">30%</div>
-                            <div class="metric-label">Inventory Reduction</div>
-                        </div>
-                        <div class="metric">
-                            <div class="metric-value">500+</div>
-                            <div class="metric-label">Suppliers Tracked</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="pagination-dots">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot active"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-        </div>
-
-        <div class="slide-number">07 / 13</div>
+    <div class="kpi-grid" aria-label="Velocity KPI Grid">
+      <div class="kpi animate delay-2" role="group" aria-label="Time to First Insight KPI">
+        <div class="metric-name">Time to First Insight</div>
+        <div class="metric-body">Median time: <strong>Question → validated finding</strong> (saved view + reviewer). Captured from ticket + approval timestamps.</div>
+        <div class="target-row"><span class="tick" aria-hidden="true">✓</span><span>Days → Hours / Minutes</span></div>
+        <div class="kpi-watermark wm-time" aria-hidden="true"></div>
+      </div>
+      <div class="kpi animate delay-2" role="group" aria-label="Hypothesis Throughput KPI">
+        <div class="metric-name">Hypothesis Throughput</div>
+        <div class="metric-body">Distinct investigative questions per engineer per week (count saved explorations tagged to cases).</div>
+        <div class="target-row"><span class="tick" aria-hidden="true">✓</span><span>+2–3× Baseline</span></div>
+        <div class="kpi-watermark wm-hypo" aria-hidden="true"></div>
+      </div>
+      <div class="kpi animate delay-3" role="group" aria-label="Decision Latency KPI">
+        <div class="metric-name">Decision Latency</div>
+        <div class="metric-body">Median time: <strong>Exception detection → Action assigned</strong> (Rule triggered with owner + SLA).</div>
+        <div class="target-row"><span class="tick" aria-hidden="true">✓</span><span>–30–50%</span></div>
+        <div class="kpi-watermark wm-decision" aria-hidden="true"></div>
+      </div>
+      <div class="kpi animate delay-3" role="group" aria-label="Knowledge Reuse Rate KPI">
+        <div class="metric-name">Knowledge Reuse Rate</div>
+        <div class="metric-body">Ratio: <strong>Template‑driven runs</strong> / all runs (views, lineage queries, applets).</div>
+        <div class="target-row"><span class="tick" aria-hidden="true">✓</span><span>>60% by M6</span></div>
+        <div class="kpi-watermark wm-reuse" aria-hidden="true"></div>
+      </div>
+      <div class="kpi animate delay-4" role="group" aria-label="Continuity Index KPI">
+        <div class="metric-name">Continuity Index</div>
+        <div class="metric-body">% priority investigations completed without original expert (resilience vs single‑point failure).</div>
+        <div class="target-row"><span class="tick" aria-hidden="true">✓</span><span>>=80%</span></div>
+        <div class="kpi-watermark wm-continuity" aria-hidden="true"></div>
+      </div>
+      <div class="kpi animate delay-4" role="group" aria-label="Coverage Ratio KPI">
+        <div class="metric-name">Coverage Ratio</div>
+        <div class="metric-body">% of Events / Actors / Activities / Locations populated for pilot scope (completeness metric).</div>
+        <div class="target-row"><span class="tick" aria-hidden="true">✓</span><span>100% Pilot</span></div>
+        <div class="kpi-watermark wm-coverage" aria-hidden="true"></div>
+      </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const elements = document.querySelectorAll('.fade-in, .slide-up');
-            elements.forEach((element, index) => {
-                element.style.animationDelay = `${index * 0.15}s`;
-            });
-        });
+    <blockquote class="animate delay-5" aria-label="Why These Matter">Why these matter: shift from <strong>“ask a human”</strong> to <strong>“ask the system.”</strong></blockquote>
 
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'ArrowRight' || e.key === ' ') {
-                if (window.parent && window.parent.presentation) {
-                    window.parent.presentation.nextSlide();
-                }
-            } else if (e.key === 'ArrowLeft') {
-                if (window.parent && window.parent.presentation) {
-                    window.parent.presentation.previousSlide();
-                }
-            }
-        });
-    </script>
+    <div class="pagination" aria-label="Pagination Dots">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+    <div class="footer">© 2025 Tata × Palantir. All rights reserved.</div>
+  </div>
+  <script>window.addEventListener('load', () => setTimeout(()=>document.getElementById('root').classList.add('start'), 200));</script>
 </body>
 </html>

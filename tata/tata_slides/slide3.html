@@ -1,474 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tata's Distributed Strength</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Exposure & IP Risk: Materials + ASML Context</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Inter', system-ui, Helvetica, Arial, sans-serif; background:#F0F0F0; color:#000; overflow:hidden; min-height:100vh; display:flex; align-items:center; justify-content:center; }
+    .slide-container { width:1280px; height:720px; background:#121212; border-radius:16px; padding:56px 56px 88px 56px; color:#FFFFFF; position:relative; display:flex; flex-direction:column; }
+    .nav-pill { position:absolute; top:20px; left:20px; background:#2A2A2C; color:#FFF; padding:8px 16px; border-radius:999px; font-size:12px; font-weight:500; letter-spacing:0.05em; box-shadow:0 0 0 1px #3A3A3C; }
+    .pagination { position:absolute; bottom:20px; left:50%; transform:translateX(-50%); display:flex; gap:8px; }
+    .dot { width:12px; height:12px; border-radius:50%; border:1px solid #D0D0D0; background:transparent; }
+    .dot.active { background:#FFFFFF; }
+    .footer { position:absolute; bottom:20px; left:20px; font-size:10px; color:#D0D0D0; }
 
-        body {
-            font-family: 'Inter', system-ui, Helvetica, Arial, sans-serif;
-            background-color: #F0F0F0;
-            color: #FFFFFF;
-            overflow: hidden;
-            height: 100vh;
-            width: 100vw;
-        }
+    .layout { flex:1; display:grid; grid-template-columns: repeat(2, 1fr); gap:40px; align-items:start; padding-top:140px; }
+    .header-title { position:absolute; top:60px; left:56px; right:56px; font-size:56px; font-weight:800; letter-spacing:0.01em; color:#FFFFFF; line-height:1.15; }
+    .subline { position:absolute; top:100px; left:56px; right:56px; font-size:14px; font-weight:400; color:#B8B8B8; line-height:1.4; max-width:1060px; padding: 30px 0 0 0; }
+    .card { background:#1C1C1E; border:1px solid #2A2A2C; border-radius:18px; padding:12px 28px 28px 28px; position:relative; display:flex; flex-direction:column; min-height:300px; overflow:hidden; }
+    .card.rare-earth-bg { background:#0F0F0F; }
+    /* Adjusted image path */
+    .card.rare-earth-bg:after { content:""; position:absolute; inset:0; background:url('./imgs/rare_earths.jpg') center/cover no-repeat; filter:brightness(0.42) saturate(0.9) contrast(1.05); opacity:0.25; z-index:0; }
+    .card.rare-earth-bg > * { position:relative; z-index:1; }
+    .card.equipment-bg { background:#0F0F0F; }
+    .card.equipment-bg:after { content:""; position:absolute; inset:0; background:url('./imgs/china_semicon_dark.jpeg') center/cover no-repeat; filter:brightness(0.38) saturate(0.85) contrast(1.08); opacity:0.30; z-index:0; }
+    .card.equipment-bg > * { position:relative; z-index:1; }
+    .card:before { content:""; position:absolute; inset:0; background:linear-gradient(160deg,rgba(255,255,255,0.035),rgba(255,255,255,0)); pointer-events:none; border-radius:inherit; }
+    .card-header { font-size:12px; font-weight:600; letter-spacing:0.05em; color:#00E6C3; text-transform:uppercase; margin-bottom:10px; }
+    .chart { position:relative; display:flex; flex-direction:column; gap:8px; margin-top:2px; }
+    .h-row { display:flex; align-items:center; gap:10px; position:relative; }
+    .h-label { width:150px; font-size:11px; color:#A8A8A8; letter-spacing:0.04em; font-weight:500; }
+    .h-bar-track { flex:1; height:14px; background:#2A2A2C; border-radius:7px; position:relative; overflow:hidden; box-shadow:inset 0 0 0 1px #252525; }
+    .h-bar-fill { position:absolute; top:0; left:0; height:100%; background:linear-gradient(90deg,#00E6C3 0%, #009C82 100%); display:flex; align-items:center; justify-content:flex-end; font-size:10px; font-weight:700; color:#053B33; padding-right:6px; letter-spacing:0.02em; text-shadow:0 1px 1px rgba(0,0,0,0.25); }
+    .grid-lines { position:absolute; inset:0; pointer-events:none; }
+    .grid-lines::before, .grid-lines::after { content:""; position:absolute; top:0; bottom:0; width:1px; background:rgba(255,255,255,0.08); }
+    .grid-lines::before { left:50%; }
+    .grid-lines::after { left:75%; }
+    .x-scale { position:absolute; bottom:-14px; left:150px; right:0; display:flex; justify-content:space-between; font-size:9px; color:#6A6A6A; letter-spacing:0.02em; }
+    .legend-note { font-size:11px; color:#7A7A7A; margin-top:12px; line-height:1.3; }
+    .numeric-emph { font-size:46px; font-weight:900; letter-spacing:-0.02em; line-height:0.9; background:linear-gradient(90deg,#FFFFFF 0%, #B6FFF4 100%); -webkit-background-clip:text; color:transparent; }
+    .label { font-size:21px; font-weight:600; color:#FFFFFF; margin-top:40px; line-height:1.3; }
+    .body-copy { margin-top:10px; font-size:12px; line-height:1.5; color:#C8C8C8; }
+    .body-copy strong { color:#FFFFFF; font-weight:600; }
 
-        .slide-container {
-            width: 1280px;
-            height: 720px;
-            background-color: #121212;
-            border-radius: 16px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            margin: auto;
-            top: 50%;
-            transform: translateY(-50%);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            padding: 60px;
-        }
+    /* Security context strip */
+    .security-strip { position:absolute; left:56px; right:56px; bottom:116px; height:84px; background:#1C1C1E; border:1px solid #2A2A2C; border-radius:18px; display:flex; align-items:center; padding:0 30px; gap:20px; }
+    .shield { width:36px; height:36px; border-radius:10px; background:linear-gradient(145deg,#00E6C3 0%, #007A66 100%); display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:800; color:#121212; letter-spacing:-0.02em; }
+    .security-meta { display:flex; flex-direction:column; gap:4px; }
+    .security-label { font-size:10px; font-weight:600; letter-spacing:0.13em; color:#00E6C3; text-transform:uppercase; }
+    .security-text { font-size:11px; color:#D0D0D0; line-height:1.28; }
+    .security-text strong { color:#FFFFFF; font-weight:600; }
 
-        .slide-header {
-            text-align: center;
-            margin-bottom: 60px;
-        }
+    .disclaimer { position:absolute; right:56px; bottom:22px; font-size:9px; color:#7A7A7A; text-align:right; }
 
-        .section-label {
-            font-size: 16px;
-            font-weight: 500;
-            color: #00E6C3;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 20px;
-        }
+    /* Animations */
+    .animate { opacity:0; transform:translateY(28px); transition:opacity .7s cubic-bezier(.16,.78,.24,1), transform .7s cubic-bezier(.16,.78,.24,1); }
+    .delay-1 { transition-delay:.15s; }
+    .delay-2 { transition-delay:.3s; }
+    .delay-3 { transition-delay:.45s; }
+    .delay-4 { transition-delay:.6s; }
+    .start .animate { opacity:1; transform:translateY(0); }
 
-        .main-headline {
-            font-size: 56px;
-            font-weight: 700;
-            line-height: 1.1;
-            color: #FFFFFF;
-            letter-spacing: -0.02em;
-            margin-bottom: 20px;
-        }
-
-        .subtitle {
-            font-size: 20px;
-            font-weight: 400;
-            color: #D0D0D0;
-            line-height: 1.4;
-        }
-
-        .charts-container {
-            display: flex;
-            gap: 40px;
-            height: 400px;
-            justify-content: space-between;
-            flex: 1;
-        }
-
-        .chart-section {
-            flex: 1;
-            background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-        }
-
-        .chart-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #FFFFFF;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .chart-subtitle {
-            font-size: 14px;
-            font-weight: 400;
-            color: #4A4A4A;
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        /* Network Chart Styles */
-        .network-chart {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 280px;
-            position: relative;
-        }
-
-        .network-nodes {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
-            position: relative;
-        }
-
-        .network-node {
-            width: 60px;
-            height: 60px;
-            background-color: #00E6C3;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 600;
-            color: #121212;
-            position: relative;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        .network-node:nth-child(odd) {
-            animation-delay: 0.5s;
-        }
-
-        .network-connections {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .connection-line {
-            position: absolute;
-            height: 2px;
-            background: linear-gradient(90deg, #00E6C3 0%, rgba(0, 230, 195, 0.3) 100%);
-            transform-origin: left center;
-        }
-
-        /* Distribution Chart Styles */
-        .distribution-chart {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 280px;
-        }
-
-        .distribution-bars {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            flex: 1;
-        }
-
-        .distribution-bar {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .bar-label {
-            font-size: 14px;
-            font-weight: 500;
-            color: #D0D0D0;
-            min-width: 80px;
-        }
-
-        .bar-container {
-            flex: 1;
-            height: 8px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #00E6C3 0%, #00A89E 100%);
-            border-radius: 4px;
-            transition: width 1.5s ease-out;
-            animation: fillBar 2s ease-out;
-        }
-
-        .bar-value {
-            font-size: 12px;
-            font-weight: 600;
-            color: #00E6C3;
-            min-width: 40px;
-            text-align: right;
-        }
-
-        .navigation-pills {
-            position: absolute;
-            top: 40px;
-            left: 40px;
-            display: flex;
-            gap: 12px;
-        }
-
-        .pill {
-            padding: 12px 20px;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: 500;
-            text-decoration: none;
-            transition: all 0.2s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #D0D0D0;
-            background-color: transparent;
-        }
-
-        .pill.active {
-            background-color: #00E6C3;
-            color: #121212;
-            border-color: #00E6C3;
-        }
-
-        .pill:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: #FFFFFF;
-        }
-
-        .pill.active:hover {
-            background-color: #00E6C3;
-            color: #121212;
-        }
-
-        .pagination-dots {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 8px;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.3);
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-
-        .dot.active {
-            background-color: #00E6C3;
-        }
-
-        .dot:hover {
-            background-color: rgba(255, 255, 255, 0.6);
-        }
-
-        .slide-number {
-            position: absolute;
-            bottom: 40px;
-            right: 40px;
-            font-size: 14px;
-            color: #4A4A4A;
-            font-weight: 500;
-        }
-
-        /* Animation classes */
-        .fade-in {
-            animation: fadeIn 0.8s ease-out;
-        }
-
-        .slide-up {
-            animation: slideUp 0.6s ease-out;
-        }
-
-        .slide-left {
-            animation: slideLeft 0.8s ease-out;
-        }
-
-        .slide-right {
-            animation: slideRight 0.8s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes slideRight {
-            from {
-                opacity: 0;
-                transform: translateX(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes pulse {
-            0%, 100% { 
-                box-shadow: 0 0 0 0 rgba(0, 230, 195, 0.7);
-                transform: scale(1);
-            }
-            50% { 
-                box-shadow: 0 0 0 10px rgba(0, 230, 195, 0);
-                transform: scale(1.05);
-            }
-        }
-
-        @keyframes fillBar {
-            from {
-                width: 0%;
-            }
-            to {
-                width: var(--bar-width);
-            }
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 1320px) {
-            .slide-container {
-                width: 95vw;
-                height: 53.4375vw;
-                max-height: 90vh;
-                padding: 4%;
-            }
-            
-            .main-headline {
-                font-size: 4vw;
-            }
-            
-            .charts-container {
-                height: 30vw;
-            }
-        }
-    </style>
+    /* Pagination overlay cushion when strip present */
+    .pagination { bottom:18px; }
+</style>
 </head>
 <body>
-    <div class="slide-container">
-        <!-- Navigation Pills -->
-        <div class="navigation-pills">
-            <a href="#" class="pill">Distribution</a>
-            <a href="#" class="pill active">Tata</a>
-            <a href="#" class="pill">Strength</a>
-        </div>
-
-        <!-- Slide Header -->
-        <div class="slide-header fade-in">
-            <div class="section-label">Tata's Approach</div>
-            <h1 class="main-headline">Distributed Strength</h1>
-            <p class="subtitle">
-                Where China centralizes, Tata distributes intelligence across networks
-            </p>
-        </div>
-
-        <!-- Charts Container -->
-        <div class="charts-container">
-            <!-- Network Chart -->
-            <div class="chart-section slide-left">
-                <h3 class="chart-title">Distributed Network</h3>
-                <p class="chart-subtitle">Interconnected Regional Hubs</p>
-                
-                <div class="network-chart">
-                    <div class="network-connections">
-                        <div class="connection-line" style="top: 50%; left: 25%; width: 50%; transform: rotate(0deg);"></div>
-                        <div class="connection-line" style="top: 30%; left: 35%; width: 30%; transform: rotate(60deg);"></div>
-                        <div class="connection-line" style="top: 70%; left: 35%; width: 30%; transform: rotate(-60deg);"></div>
-                    </div>
-                    <div class="network-nodes">
-                        <div class="network-node">MUM</div>
-                        <div class="network-node">DEL</div>
-                        <div class="network-node">BLR</div>
-                        <div class="network-node">CHN</div>
-                        <div class="network-node">HYD</div>
-                        <div class="network-node">KOL</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Distribution Chart -->
-            <div class="chart-section slide-right">
-                <h3 class="chart-title">Capability Distribution</h3>
-                <p class="chart-subtitle">Balanced Regional Strengths</p>
-                
-                <div class="distribution-chart">
-                    <div class="distribution-bars">
-                        <div class="distribution-bar">
-                            <div class="bar-label">Manufacturing</div>
-                            <div class="bar-container">
-                                <div class="bar-fill" style="--bar-width: 85%; width: 85%;"></div>
-                            </div>
-                            <div class="bar-value">85%</div>
-                        </div>
-                        
-                        <div class="distribution-bar">
-                            <div class="bar-label">Innovation</div>
-                            <div class="bar-container">
-                                <div class="bar-fill" style="--bar-width: 92%; width: 92%;"></div>
-                            </div>
-                            <div class="bar-value">92%</div>
-                        </div>
-                        
-                        <div class="distribution-bar">
-                            <div class="bar-label">Services</div>
-                            <div class="bar-container">
-                                <div class="bar-fill" style="--bar-width: 78%; width: 78%;"></div>
-                            </div>
-                            <div class="bar-value">78%</div>
-                        </div>
-                        
-                        <div class="distribution-bar">
-                            <div class="bar-label">Digital</div>
-                            <div class="bar-container">
-                                <div class="bar-fill" style="--bar-width: 96%; width: 96%;"></div>
-                            </div>
-                            <div class="bar-value">96%</div>
-                        </div>
-                        
-                        <div class="distribution-bar">
-                            <div class="bar-label">Energy</div>
-                            <div class="bar-container">
-                                <div class="bar-fill" style="--bar-width: 89%; width: 89%;"></div>
-                            </div>
-                            <div class="bar-value">89%</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Pagination Dots -->
-        <div class="pagination-dots">
+    <div class="slide-container" id="root">
+    <div class="nav-pill" aria-label="Context Navigation Pill">CONTEXT‑2</div>
+        <div class="pagination">
             <div class="dot"></div>
             <div class="dot"></div>
             <div class="dot active"></div>
@@ -483,91 +84,60 @@
             <div class="dot"></div>
             <div class="dot"></div>
         </div>
+        <div class="footer">© 2025 Tata × Palantir. All rights reserved.</div>
 
-        <!-- Slide Number -->
-        <div class="slide-number">03 / 13</div>
+        <div class="header-title animate delay-1">Exposure & IP Risk</div>
+        <div class="subline animate delay-2">Concentration in upstream processing and sustained equipment revenue exposure elevate the need for governed knowledge sharing & protection of process context.</div>
+        <div class="layout">
+            <!-- Left: Materials Concentration Card -->
+            <div class="card rare-earth-bg animate delay-2" aria-labelledby="mat-header" role="group">
+                <div class="card-header" id="mat-header">Materials Concentration</div>
+                <div class="chart">
+                    <div class="h-row">
+                        <div class="h-label">Rare‑earth Processing</div>
+                        <div class="h-bar-track">
+                            <div class="h-bar-fill" style="width:90%;">90%</div>
+                            <div class="grid-lines"></div>
+                        </div>
+                    </div>
+                    <div class="x-scale"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
+                </div>
+                <div class="label">Rare‑earth processing share (China)</div>
+                <div class="body-copy">Dominance introduces <strong>systemic fragility</strong> across magnet & specialty chemical value chains; diversification requires multi‑year capital & permitting cycles.</div>
+            </div>
+
+            <!-- Right: Equipment Exposure Card -->
+            <div class="card equipment-bg animate delay-3" aria-labelledby="equip-header" role="group">
+                <div class="card-header" id="equip-header">Equipment Exposure</div>
+                <div class="chart">
+                    <div class="h-row">
+                        <div class="h-label">ASML Rev. Share (China)</div>
+                        <div class="h-bar-track">
+                            <div class="h-bar-fill" style="width:48%;">48%</div>
+                            <div class="grid-lines"></div>
+                        </div>
+                    </div>
+                    <div class="x-scale"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
+                </div>
+                <div class="label">ASML revenue share to China (recent quarter)</div>
+                <div class="body-copy">Substantial share indicates ongoing <strong>DUV/equipment flow</strong> supporting non‑EUV node buildouts and reinforcing interdependence.</div>
+            </div>
+        </div>
+
+        <!-- Security Context Strip -->
+        <div class="security-strip animate delay-4">
+            <div class="shield">▣</div>
+            <div class="security-meta">
+                <div class="security-label">Security Context</div>
+                <div class="security-text">Allegations of repeated <strong>intrusions & document exfiltration</strong> around critical equipment IP elevate governance requirements.</div>
+                <div class="security-text">Necessitates <strong>Foundry‑grade access, masking, approvals, audit</strong> to protect process knowledge & decision context.</div>
+            </div>
+        </div>
+        <div class="disclaimer animate delay-4">Figures & security statements are <strong>speaker‑attributed context</strong>; used for risk framing only.</div>
     </div>
 
     <script>
-        // Add entrance animations when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            const animations = [
-                { selector: '.fade-in', delay: 0 },
-                { selector: '.slide-left', delay: 0.3 },
-                { selector: '.slide-right', delay: 0.5 }
-            ];
-
-            animations.forEach(({ selector, delay }) => {
-                const elements = document.querySelectorAll(selector);
-                elements.forEach((element, index) => {
-                    element.style.animationDelay = `${delay + (index * 0.1)}s`;
-                });
-            });
-
-            // Animate bars with staggered timing
-            setTimeout(() => {
-                const bars = document.querySelectorAll('.bar-fill');
-                bars.forEach((bar, index) => {
-                    bar.style.animationDelay = `${index * 0.2}s`;
-                });
-            }, 800);
-        });
-
-        // Interactive navigation pills
-        document.querySelectorAll('.pill').forEach(pill => {
-            pill.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                // Remove active class from all pills
-                document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-                
-                // Add active class to clicked pill
-                this.classList.add('active');
-            });
-        });
-
-        // Interactive pagination dots
-        document.querySelectorAll('.dot').forEach((dot, index) => {
-            dot.addEventListener('click', function() {
-                console.log(`Navigate to slide ${index + 1}`);
-            });
-        });
-
-        // Keyboard navigation support
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'ArrowRight' || e.key === ' ') {
-                if (window.parent && window.parent.presentation) {
-                    window.parent.presentation.nextSlide();
-                }
-            } else if (e.key === 'ArrowLeft') {
-                if (window.parent && window.parent.presentation) {
-                    window.parent.presentation.previousSlide();
-                }
-            }
-        });
-
-        // Add dynamic connection lines animation
-        setTimeout(() => {
-            const lines = document.querySelectorAll('.connection-line');
-            lines.forEach((line, index) => {
-                line.style.animation = `fadeIn 1s ease-out ${index * 0.3}s both`;
-            });
-        }, 1500);
-
-        // Interactive network nodes
-        document.querySelectorAll('.network-node').forEach(node => {
-            node.addEventListener('mouseenter', function() {
-                this.style.transform = 'scale(1.2)';
-                this.style.backgroundColor = '#FFFFFF';
-                this.style.color = '#121212';
-            });
-            
-            node.addEventListener('mouseleave', function() {
-                this.style.transform = 'scale(1)';
-                this.style.backgroundColor = '#00E6C3';
-                this.style.color = '#121212';
-            });
-        });
+        window.addEventListener('load', () => setTimeout(()=>document.getElementById('root').classList.add('start'), 220));
     </script>
 </body>
 </html>
